@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<head>
+    <!--
+        Edgar Javier
+    -->
+    <title>SAIU-Civil</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="data:image/x-icon;base64,{{.ico}}" rel="shortcut icon" type="image/x-icon"/>
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/templatemo_style.css" rel="stylesheet" type="text/css">
+</head>
+{{$analisis := .analisis}}
+<body>
+<nav id="responsive-menu">
+    <ul class="menu-holder">
+        <li><a href="/">Portada</a></li>
+        <li><a data-toggle="modal" data-target="#new_analisis">Nuevo an&aacute;lisis</a></li>
+        <li><a data-toggle="modal" data-target="#importar">Importar</a></li>
+    </ul>
+</nav>
+<div class="templatemo-header sticky">
+    <div class="templatemo-header-gradient-bg"></div>
+    <div class="container">
+        <h1 class="text-center text-uppercase templatemo-site-name"><span class="blue">SAIU</span>&backsim;Civil &boxVH;
+            <b style="font-size: 10px;">An&aacute;lisis {{$analisis.Nombre}}</b></h1>
+        <nav class="hidden-xs text-center text-uppercase templatemo-nav">
+            <ul class="menu-holder">
+                <li><a href="/">Portada</a></li>
+                <li><a data-toggle="modal" data-target="#new_analisis">Nueva variante</a></li>
+                <li><a data-toggle="modal" data-target="#importar">Importar</a></li>
+
+            </ul>
+        </nav>
+        <div class="text-right visible-xs">
+            <a href="#" id="mobile_menu"><span class="fa fa-bars"></span></a>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+{{$analisis := .analisis}}
+{{$intersecciones := .intersecciones}}
+
+<div class="container">
+    <section id="intersecciones" class="templatemo-section">
+        <div class="row">
+            <div class="col-sm-9 col-md-9 col-lg-9" id="grafico">
+                <div class="row">
+                    <div id="graph" class="text-center">Debe de completar todos los an&aacute;lisis para que el sistema
+                        pueda graficar
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <b>Descripci&oacute;n:</b>{{$analisis.Descripcion}}<br>
+                <b>Autor:</b>{{$analisis.Autor}}
+            </div>
+        </div>
+        <img src="data:image/jpeg;base64,{{.img_borde}}" alt="Border" class="templatemo-border">
+        <div class="row templatemo-albums-container">
+            <div id="first-datatable-output">
+                <table class="table table-bordered table-responsive table-hover text-center">
+                    <thead>
+                    <tr class="datatable-filter-line" style="border:0px;"></tr>
+                    <tr>
+                        <th width="60%" class="sorting text-center">Nombre de la Variante</th>
+                        <th width="5%" class="sorting text-center">Tipo</th>
+                        <th width="15%" class="sorting text-center">Localizaci&oacute;n</th>
+                        <th width="15%" class="sorting text-center">Fecha del an&aacute;lisis</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{ range $key_interseccion,  $interseccion := $intersecciones }}
+                    <tr>
+                        <td><a href="/interseccion/{{$interseccion.ID}}">{{$interseccion.Nombre}}</a></td>
+                        <td>{{$interseccion.Tipo}}</td>
+                        <td>{{if (eq $interseccion.Area "0.9")}}Centro de ciudad{{else}}Otra zona{{end}}</td>
+                        <td>{{$interseccion.Fecha}}</td>
+                    </tr>
+                    {{end}}
+                    </tbody>
+                </table>
+                <div id="paging-first-datatable" class="pagination-datatables text-center"></div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade left" id="new_analisis" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"
+                        id="myModalLabel">Nueva variante</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Descripci&oacute;n:</label>
+                        <textarea class="form-control" id="descripcion" required="required"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Tipo:</label>
+                        <select class="form-control" name="tipo" id="tipo">
+                            <option value="X">Tipo X</option>
+                            <option value="+">Tipo Cruz</option>
+                            <option value="Y">Tipo Y</option>
+                            <option value="T">Tipo T</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Ubicaci&oacute;n:</label>
+                        <select class="form-control" name="area" id="area">
+                            <option value="0.9">Centro de ciudad</option>
+                            <option value="1">Otra zona</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Fecha:</label>
+                        <input class="form-control" id="fecha">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" id="analizar" class="btn btn-primary" onclick="addInterseccion();">Analizar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade left" id="importar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"
+                        id="myModalLabel">Importar an&aacute;lisis</h4>
+                </div>
+                <div class="modal-body">
+                    <i>Para importar un an&aacute;lisis debe de copiar en el campo de texto el c&oacute;digo exportado
+                        en json.</i>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">C&Oacute;DIGO JSON:</label>
+                        <textarea class="form-control" id="json" required="required"></textarea>
+                    </div>
+                    <b class="text-danger">Debe de agregar manualmente los grupos de carril en el an&aacute;lisis.</b>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" id="btnimportar" class="btn btn-primary" onclick="importar();">Importar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="/static/js/datatable/jquery.min.js"></script>
+<script src="/static/js/datatable/bootstrap.min.js"></script>
+<script src="/static/js/datatable/datatable.min.js"></script>
+<script src="/static/js/saiu.js"></script>
+<script src="/static/js/jscharts.js"></script>
+<script>
+
+
+    function addInterseccion() {
+        //stop submit the form, we will post it manually.
+        event.preventDefault();
+        var data = new FormData();
+        data.append('nombre', $('#nombre')[0].value);
+        data.append('analisis', "{{$analisis.ID}}");
+        data.append('descripcion', $('#descripcion')[0].value);
+        data.append('tipo', $('#tipo')[0].value);
+        data.append('area', $('#area')[0].value);
+        data.append('fecha', $('#fecha')[0].value);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/intersecciones",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    function importar() {
+        //stop submit the form, we will post it manually.
+        // event.preventDefault();
+        $('#btnimportar').addClass('disabled');
+        var data = new FormData();
+        data.append('json', $('#json')[0].value);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/importar",
+            data: data,
+            success: function (data) {
+                $('#btnimportar').removeClass('disabled');
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    //    ------------------------------
+    var myData = new Array(
+    {{ range $key_interseccion,  $interseccion := $intersecciones }}
+    {{if ne $key_interseccion 0}},{{end}}
+            [{{$key_interseccion}}, {{$interseccion.T4_DemoraInterseccion "T&Equivalente"}}]
+    {{end}}
+    );
+    var myChart = new JSChart('graph', 'line');
+    myChart.setDataArray(myData);
+    myChart.setTitle('Comportamientos de la demora por análisis');
+    myChart.setTitleColor('#000');
+    myChart.setTitleFontSize(16);
+    myChart.setAxisNameX('Fechas de los análisis');
+    myChart.setAxisNameY('Demoras');
+    myChart.setAxisColor('#2054bf');
+    myChart.setAxisValuesColor('#2054bf');
+    myChart.setAxisPaddingLeft(100);
+    myChart.setAxisPaddingRight(120);
+    myChart.setAxisPaddingTop(50);
+    myChart.setAxisPaddingBottom(40);
+    myChart.setAxisValuesDecimals(2);
+    myChart.setAxisValuesNumberX(20);
+    myChart.setShowXValues(false);
+    myChart.setGridColor('#ccc');
+    myChart.setLineColor('#2054bf');
+    myChart.setLineWidth(2);
+    myChart.setFlagColor('#bf2715');
+    myChart.setFlagRadius(4);
+    {{ range $key_interseccion,  $interseccion := $intersecciones }}
+    myChart.setTooltip([{{$key_interseccion}}, 'Di {{$interseccion.T4_DemoraInterseccion "T&Equivalente"}}s, NS {{$interseccion.T4_NivelServicioInterseccion "T&Equivalente"}}']);
+    myChart.setLabelX([{{$key_interseccion}}, '{{$interseccion.Fecha}}']);
+    {{end}}
+    var ancho = $('#grafico').width();
+    myChart.setSize(ancho, 300);
+    if (myData[1] != null) {
+        myChart.draw();
+    }
+
+    // myChart.draw();
+</script>

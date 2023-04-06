@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+        Edgar Javier
+    -->
+    <title>SAIU-Civil</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="data:image/x-icon;base64,{{.ico}}" rel="shortcut icon" type="image/x-icon"/>
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/templatemo_style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<nav id="responsive-menu">
+    <ul class="menu-holder">
+        <li><a href="#home">Portada</a></li>
+        <li><a href="#analisis">An&aacute;lisis</a></li>
+        <li><a data-toggle="modal" data-target="#new_analisis">Nuevo an&aacute;lisis</a></li>
+    </ul>
+</nav>
+<div class="templatemo-header">
+    <div class="templatemo-header-gradient-bg"></div>
+    <div class="container">
+        <h1 class="text-center text-uppercase templatemo-site-name"><span class="blue">SAIU</span>&backsim;Civil &boxVH;
+        </h1>
+        <b class="text-center hidden-xs center-block" id="name">Sistema para el an&aacute;lisis de intersecciones
+            urbanas</b>
+        <nav class="hidden-xs text-center text-uppercase templatemo-nav">
+            <ul class="menu-holder">
+                <li class="active"><a href="#home">Portada</a></li>
+                <li><a href="#analisis">An&aacute;lisis</a></li>
+                <li><a data-toggle="modal" data-target="#new_analisis">Nuevo an&aacute;lisis</a></li>
+            </ul>
+        </nav>
+        <div class="text-right visible-xs">
+            <a href="#" id="mobile_menu"><span class="fa fa-bars"></span></a>
+        </div>
+    </div>
+</div>
+<div class="templatemo-header-image"></div>
+<div class="container">
+    <section id="home" class="templatemo-section">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <img src="data:image/jpeg;base64,{{.img_home}}" alt="Banner"
+                     class="img-responsive center-block img-circle">
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <h1 class="text-uppercase text-justificate margin-top-30">Proceso de an&aacute;lisis y evaluaci&oacute;n
+                    de capacidad y nivel de servicio de intersecciones urbanas semaforizadas.</h1>
+            </div>
+        </div>
+    </section>
+    <img src="data:image/jpeg;base64,{{.img_borde}}" alt="Border" class="templatemo-border">
+    <section id="analisis" class="templatemo-section">
+        <h2 class="text-uppercase text-center">An&aacute;lisis</h2>
+        <p class="text-center margin-top-20"><b>Todos los an&aacute;lisis realizados.</b></p>
+        <div class="row templatemo-albums-container">
+            <div id="first-datatable-output">
+                <table class="table table-bordered table-responsive table-hover text-center">
+                    <thead>
+                    <tr class="datatable-filter-line" style="border:0px;"></tr>
+                    <tr>
+                        <th data-sort="0" width="5%" class="sorting text-center">#</th>
+                        <th data-sort="1" width="30%" class="sorting text-center">Nombre</th>
+                        <th data-sort="2" width="30%" class="sorting text-center">Descripci&oacute;n</th>
+                        <th data-sort="3" width="35%" class="sorting text-center">Autor</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{ range .values }}
+                    <tr>
+                        <td scope="row">{{.ID}}</td>
+                        <td><a href="/intersecciones/{{.ID}}">{{.Nombre}}</a></td>
+                        <td>{{.Descripcion}}</td>
+                        <td>{{.Autor}}</td>
+                    </tr>
+                    {{end}}
+                    </tbody>
+                </table>
+                <div id="paging-first-datatable" class="pagination-datatables text-center"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade left" id="new_analisis" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"
+                        id="myModalLabel">Nuevo an&aacute;lisis</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Descripci&oacute;n:</label>
+                        <textarea class="form-control" id="descripcion" required="required"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Autor:</label>
+                        <input type="text" class="form-control" id="autor">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" id="analizar" class="btn btn-primary" onclick="addAnalisis();">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<footer class="templatemo-footer margin-top-50">
+    <div class="container">
+        <p class="text-uppercase small templatemo-copyright">SAIU-CIVIL | Versi&oacute;n 1.2 | Autor: Edgar Javier Pe&ntilde;a
+            Hern&aacute;ndez. </p>
+
+    </div>
+</footer>
+
+
+<script src="/static/js/datatable/jquery.min.js"></script>
+<script src="/static/js/templatemo_script.js"></script>
+<script src="/static/js/datatable/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/datatable/datatable.min.js"></script>
+<script type="text/javascript" src="/static/js/saiu.js"></script>
+<script>
+    function addAnalisis() {
+        //stop submit the form, we will post it manually.
+        event.preventDefault();
+        var data = new FormData();
+        data.append('nombre', $('#nombre')[0].value);
+        data.append('descripcion', $('#descripcion')[0].value);
+        data.append('autor', $('#autor')[0].value);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

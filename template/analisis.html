@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<head>
+    <!--
+        Edgar Javier
+    -->
+    <title>SAIU-Civil</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="data:image/x-icon;base64,{{.ico}}" rel="shortcut icon" type="image/x-icon"/>
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/templatemo_style.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/saiu.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/intersecciones.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/checkbox.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+{{$interseccion := .interseccion}}
+{{$accesos := .accesos}}
+<nav id="responsive-menu">
+    <ul class="menu-holder">
+        <li><a href="/">Portada</a></li>
+        <li><a href="/intersecciones/{{.interseccion.Analisis}}">Variantes</a></li>
+        <li><a href="/interseccion/{{.interseccion.ID}}">Visualizar</a></li>
+        <li><a href="/edit_interseccion/{{$interseccion.ID}}">Editar</a></li>
+        <li><a href="/analisis_real/{{.interseccion.ID}}">Con vol&uacute;menes reales</a></li>
+    </ul>
+</nav>
+<div class="templatemo-header sticky">
+    <div class="templatemo-header-gradient-bg"></div>
+    <div class="container">
+        <h1 class="text-center text-uppercase templatemo-site-name"><span class="blue">SAIU</span>&backsim;Civil &boxVH;
+            <b style="font-size: 10px;">An&aacute;lisis de la intersecci&oacute;n, con vol&uacute;menes equivalentes</b>
+        </h1>
+        <nav class="hidden-xs text-center text-uppercase templatemo-nav">
+            <ul class="menu-holder">
+                <li><a href="/">Portada</a></li>
+                <li><a href="/intersecciones/{{.interseccion.Analisis}}">Variantes</a></li>
+                <li><a href="/interseccion/{{.interseccion.ID}}">Visualizar</a></li>
+                <li><a href="/edit_interseccion/{{$interseccion.ID}}">Editar</a></li>
+                <li><a href="/analisis_real/{{.interseccion.ID}}">Con vol&uacute;menes reales</a></li>
+            </ul>
+        </nav>
+        <div class="text-right visible-xs">
+            <a href="#" id="mobile_menu"><span class="fa fa-bars"></span></a>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<div class="container">
+    <div class="col-sm-12 col-md-12 col-lg-12 bg hidden text-center" id="loader">
+        <h3>Procesando datos</h3>
+        <div class="loader" id="loader-4">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <section id="home" class="templatemo-section">
+        <div class="row">
+            <h3>{{ .interseccion.Nombre }}</h3>
+            <table class="table table-bordered text-center" style="font-size: 12px;">
+                <tr>
+                    <td>
+                        <b>Ajuste de vol&uacute;menes</b>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-center active" width="20%">Accesos</th>
+                    <th class="text-center active" width="2%"></th>
+                {{range $key_accesos, $acceso := $accesos}}
+                    <th class="text-center">Acceso <b class="text-uppercase">{{ $acceso.Nombre }}</b></th>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Movimientos</td>
+                    <td class="text-center active"></td>
+                {{range $key_accesos, $acceso := $accesos}}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr style="border: hidden;">
+                                <td width="33.33%"><b>I</b></td>
+                                <td width="33.33%"><b>R</b></td>
+                                <td width="33.33%"><b>D</b></td>
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Vol&uacute;menes <i style="font-size: 10px;">Equivalentes</i></td>
+                    <td class="text-center active" style="font-size: 10px;">[veh/h]</td>
+                {{range $key_accesos, $acceso := $accesos}}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr style="border: hidden;">
+                                <td width="33.33%">{{if $acceso.T1_volumenes "I&Equivalente"}}{{$acceso.T1_volumenes "I&Equivalente"}}{{else}}
+                                    -{{end}}</td>
+                                <td width="33.33%">{{if $acceso.T1_volumenes "R&Equivalente"}}{{$acceso.T1_volumenes "R&Equivalente"}}{{else}}
+                                    -{{end}}</td>
+                                <td width="33.33%">{{if $acceso.T1_volumenes "D&Equivalente"}}{{$acceso.T1_volumenes "D&Equivalente"}}{{else}}
+                                    -{{end}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Factor <i style="font-size: 10px;">horario de m&aacute;xima
+                        demanda</i></td>
+                    <td class="text-center active"><i style="font-size: 10px;">FHMD</i></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <th class="text-center">{{ $acceso.Fhmd }}</th>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Intensidad</td>
+                    <td class="text-center active" style="font-size: 10px;">I[veh/h]</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center" style="border: hidden;">
+                                <td width="33.33%">{{if $acceso.T1_intensidad "I&Equivalente"}}{{$acceso.T1_intensidad "I&Equivalente"}}{{else}}
+                                    -{{end}}</td>
+                                <td width="33.33%">{{if $acceso.T1_intensidad "R&Equivalente"}}{{$acceso.T1_intensidad "R&Equivalente"}}{{else}}
+                                    -{{end}}</td>
+                                <td width="33.33%">{{if $acceso.T1_intensidad "D&Equivalente"}}{{$acceso.T1_intensidad "D&Equivalente"}}{{else}}
+                                    -{{end}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Gupos de Carriles</td>
+                    <td class="text-center active"><i style="font-size: 10px;">Gc</i></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center" style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <th class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">{{ $grupo.NombreGrupo }}</th>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Vol&uacute;men <i style="font-size: 10px;">grupo de carril</i></td>
+                    <td class="text-center active" style="font-size: 10px;"><i style="font-size: 10px;">Vg[veh/h]</i>
+                    </td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center" style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">{{if $grupo.T1_volumen_grupo "T&Equivalente" }}{{ $grupo.T1_volumen_grupo "T&Equivalente" }}{{else}}
+                                    -{{end}}</td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Intensidad <i style="font-size: 10px;">grupo de carril</i></td>
+                    <td class="text-center active" style="font-size: 10px;">Ig[veh/h]</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center" style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">{{if $grupo.T1_intensidad_grupo "T&Equivalente"}}{{$grupo.T1_intensidad_grupo "T&Equivalente"}}{{else}}
+                                    -{{end}}</td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Proporci&oacute;n <i style="font-size: 10px;">vueltas a la
+                        izquierda</i></td>
+                    <td class="text-center active" style="font-size: 10px;">Pvi[%]</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center" style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">{{if $grupo.T1_ProporcionVueltas "I&Equivalente" }}{{$grupo.T1_ProporcionVueltas "I&Equivalente" }}{{else}}
+                                    -{{end}}</td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Proporci&oacute;n <i style="font-size: 10px;">vueltas a la
+                        derecha</i></td>
+                    <td class="text-center active" style="font-size: 10px;">Pvd[%]</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center" style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">{{if $grupo.T1_ProporcionVueltas "D&Equivalente" }}{{$grupo.T1_ProporcionVueltas "D&Equivalente" }}{{else}}
+                                    -{{end}}</td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td>
+                        <b>Intensidad de saturaci&oacute;n</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center active">Saturaci&oacute;n <i style="font-size: 10px;">ideal</i></td>
+                    <td class="text-center active" style="font-size: 10px;">So[veh/h]</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <th class="text-center">{{ $acceso.Intensidad }}</th>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">N&uacute;mero <i style="font-size: 10px;">de carriles</i></td>
+                    <td class="text-center active"><i style="font-size: 10px;">N</i></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                    {{$grupo.T2_NumeroDeCarriles}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Factor <i style="font-size: 10px;">de ancho</i></td>
+                    <td class="text-center active"><i style="font-size: 10px;">FA</i></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T2_FactorAncho}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Factor <i style="font-size: 10px;">de pendiente</i></td>
+                    <td class="text-center active"><i style="font-size: 10px;">Fi</i></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$acceso.T2_FactorPendiente}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Factor <i style="font-size: 10px;">de &aacute;rea</i></td>
+                    <td class="text-center active"><i style="font-size: 10px;">Fa</i></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$interseccion.Area}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Factor <i style="font-size: 10px;">de estacionamiento</i></td>
+                    <td class="text-center active"><i style="font-size: 10px;">Fe</i></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$acceso.T2_FactorEstacionamiento $grupo}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Factor <i style="font-size: 10px;">de omnibus</i></td>
+                    <td class="text-center active"><i style="font-size: 10px;">Fbb</i></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$acceso.T2_FactorBuces $grupo}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Factor <i style="font-size: 10px;">de utilizaci&oacute;n</i></td>
+                    <td class="text-center active"><i style="font-size: 10px;">Fu</i></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T2_FactorUtilizacion "T&Equivalente"}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Factor <i style="font-size: 10px;">de vueltas a la izquierda</i></td>
+                    <td class="text-center active"><i style="font-size: 10px;">Fvi</i></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T2_FactorVueltas "I&Equivalente"}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Factor <i style="font-size: 10px;">de vueltas a la derecha</i></td>
+                    <td class="text-center active"><i style="font-size: 10px;">Fvd</i></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T2_FactorVueltas "D&Equivalente"}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Factor <i style="font-size: 10px;">de veh&iacute;culos pesados</i>
+                    </td>
+                    <td class="text-center active"><i style="font-size: 10px;">Fvp</i></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T2_FactorVP "T&Equivalente"}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Satiraci&oacute;n</td>
+                    <td class="text-center active"><i style="font-size: 10px;">Sg</i></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <th class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T2_Saturaccion "T&Equivalente"}}
+                                </th>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td>
+                        <b>An&aacute;lisis de capacidad</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center active">Tiempo de luz <i style="font-size: 10px;">verde efectivo</i></td>
+                    <td class="text-center active" style="font-size: 10px;">Gi [s]</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T3_VerdeEfectivo}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Ciclo <i style="font-size: 10px;">del sem&aacute;for</i></td>
+                    <td class="text-center active" style="font-size: 10px;">C [s]</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T3_Ciclo}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Gi/c</td>
+                    <td class="text-center active" style="font-size: 10px;">[s]</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T3_VerdeEfectivoEntreCiclo}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Capacidad</td>
+                    <td class="text-center active" style="font-size: 10px;">C [veh/h]</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T3_Capacidad "T&Equivalente"}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Xi</td>
+                    <td class="text-center active"></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T3_Xi "T&Equivalente"}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Ig/Sg</td>
+                    <td class="text-center active"></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T3_I_S "T&Equivalente"}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Grupo <i style="font-size: 10px;">Cr&iacute;tico</i></td>
+                    <td class="text-center active"></td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <th class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{if eq ($grupo.T3_GrupoCritico "T&Equivalente") "X"}}
+                                    <i class='fa fa-check'></i>
+                                {{end}}
+                                </th>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td>
+                        <b>Nivel se servicio</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center active">Demora <i style="font-size: 10px;">uniforme</i></td>
+                    <td class="text-center active" style="font-size: 10px;">D1 [s]</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T4_DemoraUniforme "T&Equivalente"}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Demora <i style="font-size: 10px;">incremental</i></td>
+                    <td class="text-center active" style="font-size: 10px;">D2 [s]</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T4_DemoraIncremental "T&Equivalente"}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Demora <i style="font-size: 10px;">grupo</i></td>
+                    <td class="text-center active" style="font-size: 10px;">Dg [s]</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <td class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T4_DemoraGrupo "T&Equivalente"}}
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Nivel de servicio <i style="font-size: 10px;">grupo</i></td>
+                    <td class="text-center active" style="font-size: 10px;">NSg</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                            {{range $grupo := $acceso.GruposPorAccesos}}
+                                <th class="text-center"
+                                    width="{{if eq $acceso.CantidadDeGruposPorAccesos 2}}50%{{else if eq $acceso.CantidadDeGruposPorAccesos 3}}33.33%{{else}}25%{{end}}">
+                                {{$grupo.T4_NivelServicioGrupo "T&Equivalente"}}
+                                </th>
+                            {{end}}
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Demora <i style="font-size: 10px;">acceso</i></td>
+                    <td class="text-center active" style="font-size: 10px;">Da [s]</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                                <td class="text-center">{{$acceso.T4_DemoraAcceso "T&Equivalente"}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Nivel de servicio <i style="font-size: 10px;">acceso</i></td>
+                    <td class="text-center active" style="font-size: 10px;">NSa</td>
+                {{range $key_accesos, $acceso := $accesos }}
+                    <td class="text-center">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center " style="border: hidden;">
+                                <th class="text-center">{{$acceso.T4_NivelServicioAcceso "T&Equivalente"}}</th>
+                            </tr>
+                        </table>
+                    </td>
+                {{end}}
+                </tr>
+                <tr>
+                    <td class="text-center active">Demora <i style="font-size: 10px;">intersecci&oacute;n</i></td>
+                    <td class="text-center active" style="font-size: 10px;">Di [s]</td>
+
+                    <td class="text-center" colspan="{{$interseccion.CantidadAccesos}}">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center"
+                                style="border: hidden;">
+
+                                <td class="text-center" width="100%">
+                                    {{$interseccion.T4_DemoraInterseccion "T&Equivalente"}}
+                                </td>
+
+                            </tr>
+                        </table>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-center active">Nivel de servicio <i style="font-size: 10px;">intersecci&oacute;n</i>
+                    </td>
+                    <td class="text-center active" style="font-size: 10px;">NSi</td>
+
+                    <td class="text-center" colspan="{{$interseccion.CantidadAccesos}}">
+                        <table class="text-center table table-bordered">
+                            <tr class="text-center"
+                                style="border: hidden;">
+
+                                <th class="text-center" width="100%" style="font-size: 18px;">
+                                {{$interseccion.T4_NivelServicioInterseccion "T&Equivalente"}}
+                                </th>
+
+                            </tr>
+                        </table>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+    </section>
+
+</div>
+</body>
+<script src="/static/js/datatable/jquery.min.js"></script>
+<script src="/static/js/datatable/bootstrap.min.js"></script>

@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<head>
+    <!--
+        Edgar Javier
+    -->
+    <title>SAIU-Civil</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="data:image/x-icon;base64,{{.ico}}" rel="shortcut icon" type="image/x-icon"/>
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/templatemo_style.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/saiu.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/intersecciones.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/checkbox.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<nav id="responsive-menu">
+    <ul class="menu-holder">
+        <li><a href="/">Portada</a></li>
+        <li><a href="/intersecciones/{{.interseccion.Analisis}}">Variantes</a></li>
+        <li><a href="/edit_interseccion/{{.interseccion.ID}}">Editar</a></li>
+        <li><a href="/analisis/{{.interseccion.ID}}">Analizar</a></li>
+        <li><a data-toggle="modal" data-target="#exportar" onclick="exportar();">Exportar</a></li>
+
+    </ul>
+</nav>
+<div class="templatemo-header sticky">
+    <div class="templatemo-header-gradient-bg"></div>
+    <div class="container">
+        <h1 class="text-center text-uppercase templatemo-site-name"><span class="blue">SAIU</span>&backsim;Civil &boxVH;
+            <b style="font-size: 10px;">Resultados de los an&aacute;lisis</b></h1>
+        <nav class="hidden-xs text-center text-uppercase templatemo-nav">
+            <ul class="menu-holder">
+                <li><a href="/">Portada</a></li>
+                <li><a href="/intersecciones/{{.interseccion.Analisis}}">Variantes</a></li>
+                <li><a href="/edit_interseccion/{{.interseccion.ID}}">Editar</a></li>
+                <li><a href="/analisis/{{.interseccion.ID}}">Analizar</a></li>
+                <li><a data-toggle="modal" data-target="#exportar" onclick="exportar();">Exportar</a></li>
+            </ul>
+        </nav>
+        <div class="text-right visible-xs">
+            <a href="#" id="mobile_menu"><span class="fa fa-bars"></span></a>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+{{$interseccion := .interseccion}}
+{{$accesos := .accesos}}
+{{$fases := .fases}}
+<div class="container">
+    <section id="home" class="templatemo-section">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="row"><br><br><br>
+                        <div class="col-sm-1 col-md-1 col-lg-1"></div>
+                        <div class="col-sm-10 col-md-10 col-lg-10">
+
+                            <div class="row">
+                                <div class="interseccion">
+                                {{ if (eq .interseccion.Tipo "T")}}
+                                    <div class="I_T_centro">
+                                        <div class="NS_I">
+                                            NSi {{$interseccion.T4_NivelServicioInterseccion "T&Equivalente"}}</div>
+                                    </div>
+                                    <div class="I_T_A1_A">
+                                    {{ range $acceso := .accesos }}
+                                    {{if (eq .Nombre "a")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_A"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_A"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_A"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_A"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Isleta "true"}}
+                                        <div class="I_ISLETA"></div>
+                                        <div class="I_ISLETA1"><span
+                                                class="fa fa-arrow-up flecha_isleta"></span></div>
+                                        <div class="I_ISLETA2"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b>&ensp;Nivel de
+                                                servicio {{$acceso.T4_NivelServicioAcceso "T&Equivalente"}}</b>
+                                        </div>
+                                    {{end}}
+                                    {{end}}
+                                    </div>
+                                    <div class="I_T_A2_B">
+                                    {{ range $acceso := .accesos }}
+                                    {{if (eq .Nombre "b")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_B"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_B"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_B"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_B"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b>&ensp;Nivel de
+                                                servicio {{$acceso.T4_NivelServicioAcceso "T&Equivalente"}}</b>
+                                        </div>
+
+                                    {{end}}
+                                    {{end}}
+                                    </div>
+                                    <div class="I_T_A2_C">
+                                    {{ range $acceso := .accesos }}
+                                    {{if (eq .Nombre "c")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_A"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_C"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_C"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_C"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Isleta "true"}}
+                                        <div class="I_ISLETA"></div>
+                                        <div class="I_ISLETA1"><span
+                                                class="fa fa-arrow-up flecha_isleta"></span></div>
+                                        <div class="I_ISLETA2"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b>&ensp;Nivel de
+                                                servicio {{$acceso.T4_NivelServicioAcceso "T&Equivalente"}}</b>
+                                        </div>
+                                    {{end}}
+                                    {{end}}
+                                    </div>
+                                {{else if (eq .interseccion.Tipo "Y")}}
+                                    <div class="I_Y_centro">
+                                        <div class="NS_I">
+                                            NSi {{$interseccion.T4_NivelServicioInterseccion "T&Equivalente"}}</div>
+                                    </div>
+                                    <div class="I_Y_A2_C_relleno"></div>
+                                    <div class="I_Y_A1_A">
+                                    {{ range $acceso := .accesos }}
+                                    {{if (eq .Nombre "a")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_A"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_A"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_A"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_A"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b>&ensp;Nivel de
+                                                servicio {{$acceso.T4_NivelServicioAcceso "T&Equivalente"}}</b>
+                                        </div>
+                                    {{end}}
+                                    {{end}}
+                                    </div>
+                                    <div class="I_Y_A2_C">
+                                    {{ range $acceso := .accesos }}
+                                    {{if (eq .Nombre "c")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_C"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_C"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_C"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_C"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option" style="transform: rotate(-180deg);">
+                                            <b>Nivel de
+                                                servicio {{$acceso.T4_NivelServicioAcceso "T&Equivalente"}}</b>
+                                        </div>
+                                    {{end}}
+                                    {{end}}
+                                    </div>
+                                    <div class="I_Y_A1_B">
+                                    {{ range $acceso := .accesos }}
+                                    {{if (eq .Nombre "b")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_B"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if eq .Separadorcentral "true"}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_B"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_B"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_B"></div>
+                                    {{end}}
+                                    {{if eq .Parada  "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                    {{ if eq .Isleta "true"}}
+                                        <div class="I_Y_A1_B_ISLETA"></div>
+                                        <div class="I_ISLETA2"
+                                             style="z-index: -1; border-top: 10px solid transparent; border-bottom: 20px solid #000;"></div>
+                                    {{end}}
+                                        <div class="option"
+                                             style="transform: rotate(180deg); text-align: left;">
+                                            <b>&ensp;Nivel de
+                                                servicio {{$acceso.T4_NivelServicioAcceso "T&Equivalente"}}</b>
+                                        </div>
+                                    {{end}}
+                                    {{end}}
+                                    </div>
+                                {{else}}
+                                    <div class="I_M_centro">
+                                        <div class="NS_I">
+                                            NSi {{$interseccion.T4_NivelServicioInterseccion "T&Equivalente"}}</div>
+                                    </div>
+                                    <div class="I_M_A1_A">
+                                    {{ range $acceso := .accesos }}
+                                    {{if (eq .Nombre "a")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_a"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_a"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_a"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_a"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Isleta "true"}}
+                                        <div class="I_ISLETA"></div>
+                                        <div class="I_ISLETA1"><span
+                                                class="fa fa-arrow-up flecha_isleta"></span></div>
+                                        <div class="I_ISLETA2"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b class="text" data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="Nivel de servicio">
+                                                Nivel de servicio {{$acceso.T4_NivelServicioAcceso "T&Equivalente"}}
+                                            </b>
+
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_a"></div>
+                                    {{end}}
+                                    {{end}}
+                                    </div>
+                                    <div class="I_M_A2_D">
+                                    {{ range $acceso := .accesos }}
+                                    {{if (eq .Nombre "d")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_d"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC">
+                                                            <span class="fa fa-arrow-down">
+                                                            </span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_d"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_d"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_d"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Isleta "true"}}
+                                        <div class="I_ISLETA"></div>
+                                        <div class="I_ISLETA1"><span
+                                                class="fa fa-arrow-up flecha_isleta"></span></div>
+                                        <div class="I_ISLETA2"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b>Nivel de servicio {{$acceso.T4_NivelServicioAcceso "T&Equivalente"}}</b>
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_d"></div>
+                                    {{end}}{{end}}
+                                    </div>
+                                    <div class="I_M_A1_C">
+                                    {{ range $acceso := .accesos }}
+                                    {{if (eq .Nombre "c")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_c"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_c"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_c"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_c"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Isleta "true"}}
+                                        <div class="I_ISLETA"></div>
+                                        <div class="I_ISLETA1"><span
+                                                class="fa fa-arrow-up flecha_isleta"></span></div>
+                                        <div class="I_ISLETA2"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option"
+                                             style="transform: rotate(180deg); text-align: left;">
+                                            <b>&ensp;Nivel de
+                                                servicio {{$acceso.T4_NivelServicioAcceso "T&Equivalente"}}</b>
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_c"></div>
+                                    {{end}}
+                                    {{end}}
+                                    </div>
+                                    <div class="I_M_A2_B">
+                                    {{ range $acceso := .accesos }}
+                                    {{if (eq .Nombre "b")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_b"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_b"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_b"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_b"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Isleta "true"}}
+                                        <div class="I_ISLETA"></div>
+                                        <div class="I_ISLETA1"><span
+                                                class="fa fa-arrow-up flecha_isleta"></span></div>
+                                        <div class="I_ISLETA2"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b>&ensp;Nivel de
+                                                servicio {{$acceso.T4_NivelServicioAcceso "T&Equivalente"}}</b>
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_b"></div>
+                                    {{end}}
+                                    {{end}}
+                                    </div>
+                                {{end}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="row">
+                        <h3 class="text-uppercase text-center">Intersecci&oacute;n {{ $interseccion.Nombre }}</h3>
+                        <p style="text-align: justify;">{{ $interseccion.Descripcion }}</p>
+                    </div>
+                    <p>
+                        <br><br><br>
+                        <b>Recomendaciones de complejidad baja:</b><br>
+                        1- Analizar los tiempos de luces del sem&aacute;foro, para cada fase, o sea, reorganizar los
+                        tiempos de luz
+                        verde en dependencia de los datos obtenidos.<br>
+                        2- Reorganizar los vol&uacute;menes en cada carril.<br>
+                        3- Reordenamiento de las fases del sem&aacute;foro.<br>
+                        4- Combinaci&oacute;n de las dos primeras.<br>
+                        <br>
+                        <b>Recomendaciones de complejidad media:</b><br>
+                        1- Desviar el tr&aacute;nsito por una v&iacute;a paralela. Lo que conlleva a la prohibici&oacute;n
+                        de la maniobra
+                        establecida.<br>
+                        2- Agregar un carril en el espacio de un separador central, si este no fuese mediante marcas
+                        horizontales.<br>
+                        <br>
+                        <b>Recomendaciones de complejidad alta:</b><br>
+                        1- Modificaci&oacute;n de la secci&oacute;n transversal de la v&iacute;a, que puede ser, inclusi&oacute;n
+                        de isletas, rotondas.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade left" id="exportar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"
+                        id="myModalLabel">Exportar an&aacute;lisis</h4>
+                </div>
+                <div class="modal-body">
+                    <i>Salve el c&oacute;digo exportado json, en un fichero.</i>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">C&Oacute;DIGO JSON:</label>
+                        <textarea class="form-control" id="json" rows="10" required="required"></textarea>
+                    </div>
+                    <b class="text-danger">Cuando importe este an&aacute;lisis, debe de agregar manualmente los grupos
+                        de carril</b>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="/static/js/datatable/jquery.min.js"></script>
+<script src="/static/js/datatable/bootstrap.min.js"></script>
+<script>
+    function exportar(){
+        var data = new FormData();
+        $.ajax({
+            type: "GET",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/exportar/{{.interseccion.ID}}",
+            success: function (data) {
+                    $('#json').text(JSON.stringify(data));
+            }
+        });
+    }
+    //--------------------------------------------------------
+    //-----------FUNCIONES PARA MOSTRAR EN LA PLANTILLA-------
+    //--------------------------------------------------------
+    $(document).ready(function () {
+            {{range $k, $acceso := $accesos}}
+                parent = $('#Carriles_{{$acceso.Nombre}}');
+                num = {{$acceso.CountCarrilesPorAccesos}} -2;
+                count = parent.children.length + num;
+                size = parent.width() / count;
+                html = "";
+                for (var i = 1; i <= count; i++) {
+                    if (i == 1) {
+                        html += '<div style="display: inline-block; min-height: ' + parent.height() + 'px; min-width:' + (size - 1) + 'px">' + i + '</div>'
+                    } else {
+                        html += '<div style="display: inline-block; min-height: ' + parent.height() + 'px; border-left: dashed 1px #fff; min-width:' + (size - 1) + 'px">' + i + '</div>'
+                    }
+                }
+                parent.html(html);
+                //
+                parent = $('#add_carril_{{$acceso.Nombre}}');
+                num ={{$acceso.CountCarrilesPorAccesos}} -1;
+                count = parent.children.length + num;
+                size = parent.width() / count;
+                html = "";
+                for (var i = 1; i <= count; i++) {
+                    if (i == 1) {
+                        html += '<div style="display: inline-block; min-height: ' + parent.height() + 'px; min-width:' + (size - 1) + 'px">' + i + '</div>'
+                    } else {
+                        if (i == count) {
+                            text = "+";
+                        } else {
+                            text = i;
+                        }
+
+                        html += '<div style="display: inline-block; min-height: ' + parent.height() + 'px; border-left: dashed 1px #000; min-width:' + (size - 1) + 'px">' + text + '</div>'
+                    }
+                }
+                parent.html(html);
+            {{end}}
+
+            }
+    );
+</script>

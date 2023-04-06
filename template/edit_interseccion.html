@@ -1,0 +1,3062 @@
+<!DOCTYPE html>
+<head>
+    <title>SAIU-Civil</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="data:image/x-icon;base64,{{.ico}}" rel="shortcut icon" type="image/x-icon"/>
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/templatemo_style.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/saiu.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/intersecciones.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/checkbox.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<nav id="responsive-menu">
+    <ul class="menu-holder">
+        <li><a href="/">Portada</a></li>
+        <li><a href="/intersecciones/{{.interseccion.Analisis}}">Variantes</a></li>
+        <li><a href="/interseccion/{{.interseccion.ID}}">Visualizar</a></li>
+        <li><a href="/analisis/{{.interseccion.ID}}">Analizar</a></li>
+        <li><a href="#" data-toggle="modal" data-target="#ayuda">Ayuda</a></li>
+
+    </ul>
+</nav>
+<div class="templatemo-header sticky">
+    <div class="templatemo-header-gradient-bg"></div>
+    <div class="container">
+        <h1 class="text-center text-uppercase templatemo-site-name"><span class="blue">SAIU</span>&backsim;Civil &boxVH;
+            <b style="font-size: 10px;" id="mensajes">Editar intersecci&oacute;n</b></h1>
+        <nav class="hidden-xs text-center text-uppercase templatemo-nav">
+            <ul class="menu-holder">
+                <li><a href="/">Portada</a></li>
+                <li><a href="/intersecciones/{{.interseccion.Analisis}}">Variantes</a></li>
+                <li><a href="/interseccion/{{.interseccion.ID}}">Visualizar</a></li>
+                <li><a href="/analisis/{{.interseccion.ID}}">Analizar</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#ayuda">Ayuda</a></li>
+            </ul>
+        </nav>
+        <div class="text-right visible-xs">
+            <a href="#" id="mobile_menu"><span class="fa fa-bars"></span></a>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+{{$interseccion := .interseccion}}
+{{$accesos := .accesos}}
+{{$fases := .fases}}
+<div class="container">
+    <section id="home" class="templatemo-section">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="row"><br><br><br>
+                        <div class="col-sm-1 col-md-1 col-lg-1"></div>
+                        <div class="col-sm-10 col-md-10 col-lg-10">
+                            <div class="row">
+                                <div class="interseccion">
+                                {{ if (eq .interseccion.Tipo "T")}}
+                                    <div class="I_T_centro">
+                                        <div class="NS_I">
+                                            NSi {{$interseccion.T4_NivelServicioInterseccion "T&Equivalente"}}
+                                        </div>
+                                    </div>
+                                    <div class="I_T_A1_A">
+                                    {{ range .accesos }}
+                                    {{if (eq .Nombre "a")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_a"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_a"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_a"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_a"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Isleta "true"}}
+                                        <div class="I_ISLETA"></div>
+                                        <div class="I_ISLETA1"><span
+                                                class="fa fa-arrow-up flecha_isleta"></span></div>
+                                        <div class="I_ISLETA2"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="Acceso A">A</b>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#del_acceso_{{.ID}}"
+                                                    onmouseover="titulo('No analizar el acceso A');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-eye-slash"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_grupo_{{.ID}}"
+                                                    onmouseover="titulo('Crear grupo de carriles en el acceso A');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-cubes"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_carril_{{.ID}}"
+                                                    onmouseover="on_add_carril_a(); titulo('Agregar un carril al acceso A');"
+                                                    onmouseout="off_add_carril_a(); titulo('Editar intersección');"
+                                                    {{ if eq .CountCarrilesPorAccesos 6 }}disabled="disabled"{{end}}>
+                                                <i class="fa fa-bars" style="transform: rotate(90deg);"></i>
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#edit_acceso_{{.ID}}"
+                                                    onmouseover="titulo('Editar el acceso A');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_a"></div>
+                                    {{end}}
+                                    {{end}}
+                                        <div class="new_acceso {{range .accesos}}{{if eq .Nombre "a"}}hidden {{end}}{{end}}"
+                                             data-toggle="modal"
+                                             data-target="#add_acceso_a"
+                                             onmouseover="titulo('Agregar el acceso a al análisis');"
+                                             onmouseout="titulo('Editar intersección');">
+                                            <i class="fa fa-eye-slash"></i>
+                                        </div>
+                                    </div>
+                                    <div class="I_T_A2_B">
+                                    {{ range .accesos }}
+                                    {{if (eq .Nombre "b")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_b"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_b"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_b"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_b"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b>B</b>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#del_acceso_{{.ID}}"
+                                                    onmouseover="titulo('no analizar el acceso B');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-eye-slash"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_grupo_{{.ID}}"
+                                                    onmouseover="titulo('Crear grupo de carriles en el acceso b');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-cubes"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_carril_{{.ID}}"
+                                                    onmouseover="on_add_carril_b(); titulo('agreagr un carril al acceso b');"
+                                                    onmouseout="off_add_carril_b(); titulo('Editar intersección')"
+                                                    {{ if eq .CountCarrilesPorAccesos 6 }}disabled="disabled"{{end}}>
+                                                <i class="fa fa-bars"
+                                                   style="transform: rotate(90deg);"></i>
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#edit_acceso_{{.ID}}"
+                                                    onmouseover="titulo('Editar el acceso b');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_b"></div>
+                                    {{end}}{{end}}
+                                        <div class="new_acceso {{range .accesos}}{{if eq .Nombre "b"}}hidden {{end}}{{end}}"
+                                             data-toggle="modal"
+                                             data-target="#add_acceso_b"
+                                             onmouseover="titulo('Agregar el acceso b al análisis');"
+                                             onmouseout="titulo('Editar intersección');">
+                                            <i class="fa fa-eye-slash"></i>
+                                        </div>
+
+                                    </div>
+                                    <div class="I_T_A2_C">
+                                    {{ range .accesos }}
+                                    {{if (eq .Nombre "c")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_c"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_c"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_c"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_c"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Isleta "true"}}
+                                        <div class="I_ISLETA"></div>
+                                        <div class="I_ISLETA1"><span
+                                                class="fa fa-arrow-up flecha_isleta"></span></div>
+                                        <div class="I_ISLETA2"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b>C</b>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#del_acceso_{{.ID}}"
+                                                    onmouseover="titulo('No analizar el acceso c');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-eye-slash"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_grupo_{{.ID}}"
+                                                    onmouseover="titulo('crear grupo de carriles en el acceso c');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-cubes"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_carril_{{.ID}}"
+                                                    onmouseover="on_add_carril_c(); titulo('agregar un carril al acceso c');"
+                                                    onmouseout="off_add_carril_c(); titulo('Editar intersección');"
+                                                    {{ if eq .CountCarrilesPorAccesos 6 }}disabled="disabled"{{end}}>
+                                                <i class="fa fa-bars"
+                                                   style="transform: rotate(90deg);"></i>
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#edit_acceso_{{.ID}}"
+                                                    onmouseover="titulo('editar el acceso c');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_c"></div>
+                                    {{end}}{{end}}
+                                        <div class="new_acceso {{range .accesos}}{{if eq .Nombre "c"}}hidden {{end}}{{end}}"
+                                             data-toggle="modal"
+                                             data-target="#add_acceso_c"
+                                             onmouseover="titulo('Agregar el acceso c al análisis');"
+                                             onmouseout="titulo('Editar intersección');">
+                                            <i class="fa fa-eye-slash"></i>
+                                        </div>
+
+                                    </div>
+                                {{else if (eq .interseccion.Tipo "Y")}}
+                                    <div class="I_Y_centro">
+                                        <div class="NS_I">
+                                            NSi {{$interseccion.T4_NivelServicioInterseccion "T&Equivalente"}}
+                                        </div>
+                                    </div>
+                                    <div class="I_Y_A2_C_relleno"></div>
+                                    <div class="I_Y_A1_A">
+                                    {{ range .accesos }}
+                                    {{if (eq .Nombre "a")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_A"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_a"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_a"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_a"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b>A</b>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#del_acceso_{{ .ID }}"
+                                                    onmouseover="titulo('No analizar el acceso a');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-eye-slash"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_grupo_{{.ID}}"
+                                                    onmouseover="titulo('crear grupo de carriles en el acceso a');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-cubes"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_carril_{{.ID}}"
+                                                    onmouseover="on_add_carril_a(); titulo('agregar un carril al acceso a');"
+                                                    onmouseout="off_add_carril_a(); titulo('Editar intersección');"
+                                                    {{ if eq .CountCarrilesPorAccesos 6 }}disabled="disabled"{{end}}>
+                                                <i class="fa fa-bars" style="transform: rotate(90deg);"></i>
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#edit_acceso_{{.ID}}"
+                                                    onmouseover="titulo('editar el acceso a');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_a"></div>
+
+                                    {{end}}
+                                    {{end}}
+                                        <div class="new_acceso {{range .accesos}}{{if eq .Nombre "a"}}hidden {{end}}{{end}}"
+                                             data-toggle="modal"
+                                             data-target="#add_acceso_a"
+                                             onmouseover="titulo('Agregar el acceso a al análisis');"
+                                             onmouseout="titulo('Editar intersección');">
+                                            <i class="fa fa-eye-slash"></i>
+                                        </div>
+                                    </div>
+                                    <div class="I_Y_A2_C">
+                                    {{ range .accesos }}
+                                    {{if (eq .Nombre "c")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_c"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_c"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_c"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_c"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option" style="transform: rotate(-180deg);">
+                                            <b>C</b>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#del_acceso_{{ .ID }}"
+                                                    onmouseover="titulo('No analizar el acceso c');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-eye-slash"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_grupo_{{.ID}}"
+                                                    onmouseover="titulo('crear grupo de carriles en el acceso c');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-cubes"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_carril_{{.ID}}"
+                                                    onmouseover="on_add_carril_c(); titulo('agregar un carril al acceso c')"
+                                                    onmouseout="off_add_carril_c(); titulo('Editar intersección');"
+                                                    {{ if eq .CountCarrilesPorAccesos 6 }}disabled="disabled"{{end}}>
+                                                <i class="fa fa-bars"
+                                                   style="transform: rotate(90deg);"></i>
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#edit_acceso_{{.ID}}"
+                                                    onmouseover="titulo('editar el acceso c');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_c"></div>
+                                    {{end}}
+                                    {{end}}
+
+                                        <div class="new_acceso {{range .accesos}}{{if eq .Nombre "c"}}hidden {{end}}{{end}}"
+                                             data-toggle="modal"
+                                             data-target="#add_acceso_c"
+                                             onmouseover="titulo('Agregar el acceso c al análisis');"
+                                             onmouseout="titulo('Editar intersección');">
+                                            <i class="fa fa-eye-slash"></i>
+                                        </div>
+
+                                    </div>
+                                    <div class="I_Y_A1_B">
+                                    {{ range .accesos }}
+                                    {{if (eq .Nombre "b")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_b"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if eq .Separadorcentral "true"}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_b"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_b"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_b"></div>
+                                    {{end}}
+                                    {{if eq .Parada  "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                    {{ if eq .Isleta "true"}}
+                                        <div class="I_Y_A1_B_ISLETA"></div>
+                                        <div class="I_ISLETA2"
+                                             style="z-index: -1; border-top: 10px solid transparent; border-bottom: 20px solid #000;"></div>
+                                    {{end}}
+                                        <div class="option"
+                                             style="transform: rotate(180deg); text-align: left;">
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs"
+                                                    data-toggle="modal"
+                                                    data-target="#del_acceso_{{ .ID }}"
+                                                    onmouseover="titulo('No analizar el acceso b');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-eye-slash"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs"
+                                                    data-toggle="modal"
+                                                    data-target="#add_grupo_{{.ID}}"
+                                                    onmouseover="titulo('crear grupo de carriles en el acceso b');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-cubes"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs"
+                                                    data-toggle="modal"
+                                                    data-target="#add_carril_{{.ID}}"
+                                                    onmouseover="on_add_carril_b(); titulo('agregar un carril al acceso b');"
+                                                    onmouseout="off_add_carril_b(); titulo('Editar intersección');"
+                                                    {{ if eq .CountCarrilesPorAccesos 6 }}disabled="disabled"{{end}}>
+                                                <i class="fa fa-bars"
+                                                   style="transform: rotate(90deg);"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs"
+                                                    data-toggle="modal"
+                                                    data-target="#edit_acceso_{{.ID}}"
+                                                    onmouseover="titulo('editar el acceso b');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                            <b>&ensp;B</b>
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_b"></div>
+                                    {{end}}
+                                    {{end}}
+                                        <div class="new_acceso {{range .accesos}}{{if eq .Nombre "b"}}hidden {{end}}{{end}}"
+                                             data-toggle="modal"
+                                             data-target="#add_acceso_b"
+                                             onmouseover="titulo('Agregar el acceso b al análisis');"
+                                             onmouseout="titulo('Editar intersección');">
+                                            <i class="fa fa-eye-slash"></i>
+                                        </div>
+                                    </div>
+                                {{else}}
+                                    <div class="I_M_centro">
+                                        <div class="NS_I">
+                                            NSi {{$interseccion.T4_NivelServicioInterseccion "T&Equivalente"}}
+                                        </div>
+                                    </div>
+                                    <div class="I_M_A1_A">
+                                    {{ range .accesos }}
+                                    {{if (eq .Nombre "a")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_a"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_a"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_a"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_a"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Isleta "true"}}
+                                        <div class="I_ISLETA"></div>
+                                        <div class="I_ISLETA1"><span
+                                                class="fa fa-arrow-up flecha_isleta"></span></div>
+                                        <div class="I_ISLETA2"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b>A</b>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#del_acceso_{{.ID}}"
+                                                    onmouseover="titulo('No analizar el acceso a');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-eye-slash"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_grupo_{{.ID}}"
+                                                    onmouseover="titulo('crear grupo de carriles en el acceso a');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-cubes"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_carril_{{.ID}}"
+                                                    onmouseover="on_add_carril_a(); titulo('agregar un carril al acceso a');"
+                                                    onmouseout="off_add_carril_a(); titulo('Editar intersección');"
+                                                    {{ if eq .CountCarrilesPorAccesos 6 }}disabled="disabled"{{end}}>
+                                                <i class="fa fa-bars" style="transform: rotate(90deg);"></i>
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#edit_acceso_{{.ID}}"
+                                                    onmouseover="titulo('editar el acceso a');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_a"></div>
+                                    {{end}}
+                                    {{end}}
+                                        <div class="new_acceso {{range .accesos}}{{if eq .Nombre "a"}}hidden {{end}}{{end}}"
+                                             data-toggle="modal"
+                                             data-target="#add_acceso_a"
+                                             onmouseover="titulo('Agregar el acceso a al análisis');"
+                                             onmouseout="titulo('Editar intersección');">
+                                            <i class="fa fa-eye-slash"></i>
+                                        </div>
+
+                                    </div>
+                                    <div class="I_M_A2_D">
+                                    {{ range .accesos }}
+                                    {{if (eq .Nombre "d")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_d"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC">
+                                                            <span class="fa fa-arrow-down">
+                                                            </span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_d"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_d"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_d"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Isleta "true"}}
+                                        <div class="I_ISLETA"></div>
+                                        <div class="I_ISLETA1"><span
+                                                class="fa fa-arrow-up flecha_isleta"></span></div>
+                                        <div class="I_ISLETA2"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b>D</b>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#del_acceso_{{.ID}}"
+                                                    onmouseover="titulo('No analizar el acceso d');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-eye-slash"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_grupo_{{.ID}}"
+                                                    onmouseover="titulo('crear grupo de carriles en el acceso d');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-cubes"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_carril_{{.ID}}"
+                                                    onmouseover="on_add_carril_d(); titulo('agregar un carril al acceso d');"
+                                                    onmouseout="off_add_carril_d();"
+                                                    {{ if eq .CountCarrilesPorAccesos 6 }}disabled="disabled"{{end}}>
+                                                <i class="fa fa-bars"
+                                                   style="transform: rotate(90deg);"></i>
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#edit_acceso_{{.ID}}"
+                                                    onmouseover="titulo('editar el acceso c');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_d"></div>
+                                    {{end}}{{end}}
+                                        <div class="new_acceso {{range .accesos}}{{if eq .Nombre "d"}}hidden {{end}}{{end}}"
+                                             data-toggle="modal"
+                                             data-target="#add_acceso_d"
+                                             onmouseover="titulo('Agregar el acceso d al análisis');"
+                                             onmouseout="titulo('Editar intersección');">
+                                            <i class="fa fa-eye-slash"></i>
+                                        </div>
+
+                                    </div>
+                                    <div class="I_M_A1_C">
+                                    {{ range .accesos }}
+                                    {{if (eq .Nombre "c")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_c"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_c"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_c"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_c"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Isleta "true"}}
+                                        <div class="I_ISLETA"></div>
+                                        <div class="I_ISLETA1"><span
+                                                class="fa fa-arrow-up flecha_isleta"></span></div>
+                                        <div class="I_ISLETA2"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option"
+                                             style="transform: rotate(180deg); text-align: left;">
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs"
+                                                    data-toggle="modal"
+                                                    data-target="#del_acceso_{{.ID}}"
+                                                    onmouseover="titulo('No analizar el acceso c');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-eye-slash"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs"
+                                                    data-toggle="modal"
+                                                    data-target="#add_grupo_{{.ID}}"
+                                                    onmouseover="titulo('crear grupo de carriles en el acceso c');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-cubes"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs"
+                                                    data-toggle="modal"
+                                                    data-target="#add_carril_{{.ID}}"
+                                                    onmouseover="on_add_carril_c(); titulo('agregar un carril al acceso c')"
+                                                    onmouseout="off_add_carril_c(); titulo('Editar intersección');"
+                                                    {{ if eq .CountCarrilesPorAccesos 6 }}disabled="disabled"{{end}}>
+                                                <i class="fa fa-bars"
+                                                   style="transform: rotate(90deg);"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs"
+                                                    data-toggle="modal"
+                                                    data-target="#edit_acceso_{{.ID}}"
+                                                    onmouseover="titulo('editar el acceso c');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                            <b>&ensp;C</b>
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_c"></div>
+                                    {{end}}
+                                    {{end}}
+                                        <div class="new_acceso {{range .accesos}}{{if eq .Nombre "c"}}hidden {{end}}{{end}}"
+                                             data-toggle="modal"
+                                             data-target="#add_acceso_c"
+                                             style="transform: rotate(180deg);"
+                                             onmouseover="titulo('Agregar el acceso c al análisis');"
+                                             onmouseout="titulo('Editar intersección');">
+                                            <i class="fa fa-eye-slash"></i>
+                                        </div>
+
+                                    </div>
+                                    <div class="I_M_A2_B">
+                                    {{ range .accesos }}
+                                    {{if (eq .Nombre "b")}}
+                                    {{if eq .Dossentidos "true"}}
+                                    {{if and (eq .Separadorcentral .Carrilseparador) (eq .Separadorcentral "true")}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_b"></div>
+                                        <div class="I_SCC"></div>
+                                    {{else if (eq .Separadorcentral "true")}}
+                                        <div class="I_S1_SC"><span
+                                                class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2_SC" id="Carriles_b"></div>
+                                        <div class="I_SC"></div>
+                                    {{else}}
+                                        <div class="I_S1"><span class="fa fa-arrow-down"></span>
+                                        </div>
+                                        <div class="I_S2" id="Carriles_b"></div>
+                                    {{end}}
+                                    {{else}}
+                                        <div class="I_S" id="Carriles_b"></div>
+                                    {{end}}
+                                    {{if eq .Parada "true"}}
+                                        <div class="I_P"></div>
+                                    {{end}}
+                                    {{if eq .Isleta "true"}}
+                                        <div class="I_ISLETA"></div>
+                                        <div class="I_ISLETA1"><span
+                                                class="fa fa-arrow-up flecha_isleta"></span></div>
+                                        <div class="I_ISLETA2"></div>
+                                    {{end}}
+                                    {{if eq .Cebra "true"}}
+                                        <div class="cebra"></div>
+                                    {{end}}
+                                        <div class="option">
+                                            <b>B</b>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#del_acceso_{{.ID}}"
+                                                    onmouseover="titulo('No analizar el acceso b');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-eye-slash"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_grupo_{{.ID}}"
+                                                    onmouseover="titulo('crear grupo de carril en el acceso b');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-cubes"></i>
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#add_carril_{{.ID}}"
+                                                    onmouseover="on_add_carril_b(); titulo('agregar un carril al acceso b');"
+                                                    onmouseout="off_add_carril_b(); titulo('Editar intersección');"
+                                                    {{ if eq .CountCarrilesPorAccesos 6 }}disabled="disabled"{{end}}>
+                                                <i class="fa fa-bars"
+                                                   style="transform: rotate(90deg);"></i>
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs create-btn"
+                                                    data-toggle="modal"
+                                                    data-target="#edit_acceso_{{.ID}}"
+                                                    onmouseover="titulo('editar el acceso b');"
+                                                    onmouseout="titulo('Editar intersección');">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </div>
+                                        <div class="add_carril hidden" id="add_carril_b"></div>
+                                    {{end}}
+                                    {{end}}
+                                        <div class="new_acceso {{range .accesos}}{{if eq .Nombre "b"}}hidden {{end}}{{end}}"
+                                             data-toggle="modal"
+                                             data-target="#add_acceso_b"
+                                             style="transform: rotate(90deg);"
+                                             onmouseover="titulo('Agregar el acceso b al análisis');"
+                                             onmouseout="titulo('Editar intersección');">
+                                            <i class="fa fa-eye-slash"></i>
+                                        </div>
+                                    </div>
+                                {{end}}
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="row">
+                                <div style="border-bottom: #c4c4c4 solid 1px;"></div>
+                                <h4>Programaci&oacute;n del sem&aacute;foro</h4>
+                                <table class="table text-center table-hover">
+                                    <tr>
+                                        <td><b>Nombre</b></td>
+                                        <td class="bg-success"><b>Verde</b></td>
+                                        <td class="bg-warning"><b>Amarillo</b></td>
+                                        <td class="bg-danger"><b>Rojo</b></td>
+                                        <td class="bg-danger"><b>Todo Rojo</b></td>
+                                        <td><b>Ciclo</b></td>
+                                    </tr>
+                                {{range $key_fase, $fase := $fases}}
+                                    <tr id="" data-toggle="modal"
+                                        data-target="#edit_fase_{{$fase.ID}}">
+                                        <td>{{$fase.Nombre}}</td>
+                                        <td class="bg-success">{{$fase.Verde}}</td>
+                                        <td class="bg-warning">{{$fase.Amarillo}}</td>
+                                        <td class="bg-danger">{{$fase.Rojo}}</td>
+                                        <td class="bg-danger">{{$fase.Todo_rojo}}</td>
+                                        <td>{{$fase.Ciclo}}</td>
+                                    </tr>
+                                {{end}}
+                                </table>
+                                <button type="button" class="btn btn-default btn-sm btn-block" data-toggle="modal"
+                                        data-target="#add_fase">Agregar una fase al sem&aacute;foro
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <div class="row">
+                        <h4 class="text-uppercase text-center">Intersecci&oacute;n {{ $interseccion.Nombre }}</h4>
+                    </div>
+                    <div class="row">
+                    {{range $key_acceso, $acceso := $accesos}}
+                        <h4 class="saiu_name_acceso">Carriles y grupos del Acceso {{ $acceso.Nombre }}</h4>
+                        <table class="table table-responsive table-modificada text-center">
+                            <tr>
+                            {{range $key_carril, $carril := $acceso.CarrilesPorAccesos }}
+                                <td>
+                                    <div class="offer offer-primary">
+                                        <div class="shape">
+                                            <div class="shape-text" data-toggle="modal"
+                                                 data-target="#carril_edit_{{$carril.ID}}"
+                                                 onmouseover="titulo('editar el carril {{$carril.MasUno $key_carril}} del acceso {{$acceso.Nombre}}');"
+                                                 onmouseout="titulo('Editar intersección');">
+                                                C{{ $carril.MasUno $key_carril }}
+                                            </div>
+                                        </div>
+                                        <div class="gpc" data-toggle="tooltip"
+                                             data-placement="left"
+                                             title="Grupo carril">
+                                        {{range $grupo := $acceso.GruposPorAccesos}}
+                                        {{if ne ($grupo.GrupoDelCarril $carril) "null"}}
+                                            <div class="text-grupo" data-toggle="modal"
+                                                 data-target="#grupo_opt_{{$grupo.ID}}">
+                                            {{$grupo.GrupoDelCarril $carril}}
+                                            </div>
+                                        {{end}}
+                                        {{end}}
+                                        </div>
+                                        <div class="text-ancho"><b>{{$carril.Ancho}}m</b></div>
+
+                                        <div class="offer-content">
+                                            <p>
+                                            <table class="table text-center table-n-border">
+                                                <tr>
+                                                {{range $key_mov, $movimiento := $carril.MoviminetosPorCarriles}}
+                                                {{if eq $movimiento.Tipo "I"}}
+                                                    <th class="text-center"><span
+                                                            class="fa fa-arrow-left"
+                                                            data-toggle="tooltip"
+                                                            data-placement="left"
+                                                            title="Gir&aacute;n a la izquierda"></span>
+                                                    </th>
+                                                {{end}}
+                                                {{end}}
+                                                {{range $key_mov, $movimiento := $carril.MoviminetosPorCarriles}}
+                                                {{if eq $movimiento.Tipo "R"}}
+                                                    <th class="text-center"><span
+                                                            class="fa fa-arrow-up"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="Contin&uacute;an recto"></span>
+                                                    </th>
+                                                {{end}}
+                                                {{end}}
+                                                {{range $key_mov, $movimiento := $carril.MoviminetosPorCarriles}}
+                                                {{if eq $movimiento.Tipo "D"}}
+                                                    <th class="text-center"><span
+                                                            class="fa fa-arrow-right"
+                                                            data-toggle="tooltip"
+                                                            data-placement="right"
+                                                            title="Gir&aacute;n a la derecha"></span>
+                                                    </th>
+                                                {{end}}
+                                                {{end}}
+                                                </tr>
+                                                <tr>
+                                                {{range $key_mov, $movimiento := $carril.MoviminetosPorCarriles}}
+                                                {{if eq $movimiento.Tipo "I"}}
+                                                    <td>
+                                                        <span class="badge">
+                                                        {{$movimiento.VolumenPorMoviminetos}}
+                                                        </span>
+                                                    </td>
+                                                {{end}}
+                                                {{end}}
+                                                {{range $key_mov, $movimiento := $carril.MoviminetosPorCarriles}}
+                                                {{if eq $movimiento.Tipo "R"}}
+                                                    <td>
+                                                        <span class="badge">
+                                                        {{$movimiento.VolumenPorMoviminetos}}
+                                                        </span>
+                                                    </td>
+                                                {{end}}
+                                                {{end}}
+                                                {{range $key_mov, $movimiento := $carril.MoviminetosPorCarriles}}
+                                                {{if eq $movimiento.Tipo "D"}}
+                                                    <td>
+                                                        <span class="badge">
+                                                        {{$movimiento.VolumenPorMoviminetos}}
+                                                        </span>
+                                                    </td>
+                                                {{end}}
+                                                {{end}}
+                                                </tr>
+                                                <tr>
+                                                {{range $key_mov, $movimiento := $carril.MoviminetosPorCarriles}}
+                                                {{if eq $movimiento.Tipo "I"}}
+                                                    <td>
+                                                        <button type="button"
+                                                                class="btn btn-link btn-xs"
+                                                                data-toggle="modal"
+                                                                data-target="#del_mov_{{$movimiento.ID}}">
+                                                            <i class="fa fa-trash text-danger"
+                                                               data-toggle="tooltip"
+                                                               data-placement="top"
+                                                               title="Eliminar movimiento Izquierdo"></i>
+                                                        </button>
+                                                        <button type="button"
+                                                                class="btn btn-link btn-xs"
+                                                                data-toggle="modal"
+                                                                data-target="#edit_mov_{{$movimiento.ID}}">
+                                                            <i class="fa fa-edit text-primary"
+                                                               data-toggle="tooltip"
+                                                               data-placement="top"
+                                                               title="Editar movimiento Izquierdo"></i>
+                                                        </button>
+                                                    </td>
+                                                {{end}}
+                                                {{end}}
+                                                {{range $key_mov, $movimiento := $carril.MoviminetosPorCarriles}}
+                                                {{if eq $movimiento.Tipo "R"}}
+                                                    <td>
+                                                        <button type="button"
+                                                                class="btn btn-link btn-xs"
+                                                                data-toggle="modal"
+                                                                data-target="#del_mov_{{$movimiento.ID}}">
+                                                            <i class="fa fa-trash text-danger"
+                                                               data-toggle="tooltip"
+                                                               data-placement="top"
+                                                               title="Eliminar movimiento Recto"></i>
+                                                        </button>
+                                                        <button type="button"
+                                                                class="btn btn-link btn-xs"
+                                                                data-toggle="modal"
+                                                                data-target="#edit_mov_{{$movimiento.ID}}">
+                                                            <i class="fa fa-edit text-primary"
+                                                               data-toggle="tooltip"
+                                                               data-placement="top"
+                                                               title="Editar movimiento Recto"></i>
+                                                        </button>
+                                                    </td>
+                                                {{end}}
+                                                {{end}}
+                                                {{range $key_mov, $movimiento := $carril.MoviminetosPorCarriles}}
+                                                {{if eq $movimiento.Tipo "D"}}
+                                                    <td>
+                                                        <button type="button"
+                                                                class="btn btn-link btn-xs"
+                                                                data-toggle="modal"
+                                                                data-target="#del_mov_{{$movimiento.ID}}">
+                                                            <i class="fa fa-trash text-danger"
+                                                               data-toggle="tooltip"
+                                                               data-placement="top"
+                                                               title="Eliminar movimiento Derecho"></i>
+                                                        </button>
+                                                        <button type="button"
+                                                                class="btn btn-link btn-xs"
+                                                                data-toggle="modal"
+                                                                data-target="#edit_mov_{{$movimiento.ID}}">
+                                                            <i class="fa fa-edit text-primary"
+                                                               data-toggle="tooltip"
+                                                               data-placement="top"
+                                                               title="Editar movimiento Derecho"></i>
+                                                        </button>
+                                                    </td>
+                                                {{end}}
+                                                {{end}}
+                                                </tr>
+                                            </table>
+                                            <div style="border-bottom: #c4c4c4 solid 1px;"></div>
+
+                                        {{if eq ($carril.MasUno $key_carril) $acceso.CountCarrilesPorAccesos}}
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs"
+                                                    data-toggle="modal"
+                                                    data-target="#del_carril_{{$carril.ID}}">
+                                                <i class="fa fa-trash text-danger"
+                                                   data-toggle="tooltip"
+                                                   data-placement="top"
+                                                   title="Eliminar carril ">
+                                                    Eliminar</i>
+                                            </button>
+                                        {{else}}
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs disabled">
+                                                <i class="fa fa-trash disabled"> Eliminar</i>
+                                            </button>
+                                        {{end}}
+                                        {{if le $carril.CantMoviminetosPorCarriles 2 }}
+                                            <button type="button"
+                                                    class="btn btn-link btn-xs" data-toggle="modal"
+                                                    data-target="#new_mov_{{$carril.ID}}">
+                                                <i class="fa fa-plus text-primary" data-toggle="tooltip"
+                                                   data-placement="top"
+                                                   title="Agregar un movimiento">
+                                                    Movimiento</i>
+                                            </button>
+                                        {{end}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </td>
+                            {{end}}
+                            </tr>
+                        </table>
+                    {{end}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <div class="modal fade" id="add_acceso_a" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true" style="color: #fff;">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Analizar el acceso A</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>S [%]</label>
+                                    <input type="text" name="pendiente"
+                                           value="0"
+                                           style="width: 50px;" id="pendiente_a"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>FHMD</label>
+                                    <input name="fhmd" value="0.8"
+                                           type="text" style="width: 50px;" id="fhmd_a"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>So</label>
+                                    <input name="intensidad"
+                                           value="1900" type="text"
+                                           style="width: 50px;" id="intensidad_a"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="text-align: left;">
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" name="dossentidos" id="dossentidos_a"/>
+                                <span>Dos sentido de circulaci&oacute;n</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" name="separadorcentral" id="separadorcentral_a"/>
+                                <span>Separador central</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" name="carrilseparador" id="carrilseparador_a"/>
+                                <span>Carril dentro del separador</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" name="parada" id="parada_a"/>
+                                <span>Parada</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" name="isleta" id="isleta_a"/>
+                                <span>Isleta</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" name="cebra" id="cebra_a"/>
+                                <span>Paso de peatones</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Me [u]</label>
+                                    <input name="maniobrasestacionamiento"
+                                           value="0"
+                                           type="text" style="width: 50px;" id="maniobrasestacionamiento_a"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Mp [u]</label>
+                                    <input name="maniobrasparada"
+                                           value="0"
+                                           type="text" style="width: 50px;" id="maniobrasparada_a"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tpa [s]</label>
+                                    <input name="tpad"
+                                           value="1"
+                                           type="text" style="width: 50px;" id="tpad_a"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="button" id="btn_add_acceso_a" class="btn btn-primary" onclick="addAccesos('a');">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="add_acceso_b" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true" style="color: #fff;">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Analizar el acceso B</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>S [%]</label>
+                                    <input type="text" name="pendiente"
+                                           value="0"
+                                           style="width: 50px;" id="pendiente_b"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>FHMD</label>
+                                    <input name="fhmd" value="0.8"
+                                           type="text" style="width: 50px;" id="fhmd_b"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>So</label>
+                                    <input name="intensidad"
+                                           value="1900" type="text"
+                                           style="width: 50px;" id="intensidad_b"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="text-align: left;">
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" name="dossentidos" id="dossentidos_b"/>
+                                <span>Dos sentido de circulaci&oacute;n</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" name="separadorcentral" id="separadorcentral_b"/>
+                                <span>Separador central</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" name="carrilseparador" id="carrilseparador_b"/>
+                                <span>Carril dentro del separador</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" name="parada" id="parada_b"/>
+                                <span>Parada</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" name="isleta" id="isleta_b"/>
+                                <span>Isleta</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" name="cebra" id="cebra_b"/>
+                                <span>Paso de peatones</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Me [u]</label>
+                                    <input name="maniobrasestacionamiento"
+                                           value="0"
+                                           type="text" style="width: 50px;" id="maniobrasestacionamiento_b"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Mp [u]</label>
+                                    <input name="maniobrasparada"
+                                           value="0"
+                                           type="text" style="width: 50px;" id="maniobrasparada_b"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tpa [s]</label>
+                                    <input name="tpad"
+                                           value="1"
+                                           type="text" style="width: 50px;" id="tpad_b"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn_add_acceso_b" onclick="addAccesos('b');">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="add_acceso_c" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true" style="color: #fff;">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Analizar el acceso C</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>S [%]</label>
+                                    <input type="text" name="pendiente"
+                                           value="0"
+                                           style="width: 50px;" id="pendiente_c"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>FHMD</label>
+                                    <input name="fhmd" value="0.8"
+                                           type="text" style="width: 50px;" id="fhmd_c"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>So</label>
+                                    <input name="intensidad"
+                                           value="1900" type="text"
+                                           style="width: 50px;" id="intensidad_c"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="text-align: left;">
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="dossentidos_c"/>
+                                <span>Dos sentido de circulaci&oacute;n</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="separadorcentral_c"/>
+                                <span>Separador central</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="carrilseparador_c"/>
+                                <span>Carril dentro del separador</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="parada_c"/>
+                                <span>Parada</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="isleta_c"/>
+                                <span>Isleta</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="cebra_c"/>
+                                <span>Paso de peatones</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Me [u]</label>
+                                    <input name="maniobrasestacionamiento"
+                                           value="0"
+                                           type="text" style="width: 50px;" id="maniobrasestacionamiento_c"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Mp [u]</label>
+                                    <input name="maniobrasparada"
+                                           value="0"
+                                           type="text" style="width: 50px;" id="maniobrasparada_c"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tpa [s]</label>
+                                    <input name="tpad"
+                                           value="1"
+                                           type="text" style="width: 50px;" id="tpad_c"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="button" id="btn_add_acceso_c" class="btn btn-primary" onclick="addAccesos('c');">
+                        Guardar
+                    </button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="add_acceso_d" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true" style="color: #fff;">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Analizar el acceso D</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>S [%]</label>
+                                    <input type="text" name="pendiente"
+                                           value="0"
+                                           style="width: 50px;" id="pendiente_d"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>FHMD</label>
+                                    <input name="fhmd" value="0.8"
+                                           type="text" style="width: 50px;" id="fhmd_d"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>So</label>
+                                    <input name="intensidad"
+                                           value="1900" type="text"
+                                           style="width: 50px;" id="intensidad_d"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="text-align: left;">
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="dossentidos_d"/>
+                                <span>Dos sentido de circulaci&oacute;n</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="separadorcentral_d"/>
+                                <span>Separador central</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="carrilseparador_d"/>
+                                <span>Carril dentro del separador</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="parada_d"/>
+                                <span>Parada</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="isleta_d"/>
+                                <span>Isleta</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="cebra_d"/>
+                                <span>Paso de peatones</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Me [u]</label>
+                                    <input name="maniobrasestacionamiento"
+                                           value="0"
+                                           type="text" style="width: 50px;" id="maniobrasestacionamiento_d"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Mp [u]</label>
+                                    <input name="maniobrasparada"
+                                           value="0"
+                                           type="text" style="width: 50px;" id="maniobrasparada_d"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tpa [s]</label>
+                                    <input name="tpad"
+                                           value="1"
+                                           type="text" style="width: 50px;" id="tpad_d"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="button" id="btn_add_acceso_d" class="btn btn-primary" onclick="addAccesos('d');">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="add_fase" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Adicionar
+                        un fase al sem&aacute;foro</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <input type="text" placeholder="Nombre de la fase" id="nombre" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <b>Verde</b>
+                            <input type="number" placeholder="[s]" id="verde" required/>
+                        </div>
+                        <div class="col-md-4">
+                            <b>Amarillo</b>
+                            <input type="number" placeholder="[s]" id="amarillo" required/>
+                        </div>
+                        <div class="col-md-4">
+                            <b>Rojo</b>
+                            <input type="number" placeholder="[s]" id="rojo" required/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <b>Todo rojo</b><br>
+                            <input type="number" placeholder="[s]" id="todorojo" required>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Cancelar
+                    </button>
+                    <button onclick="addFase();" id="btn_add_fase" class="btn btn-primary">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{{range  $key_fase, $fase := $fases}}
+    <div class="modal fade" id="edit_fase_{{ $fase.ID }}" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Editar
+                        fase del sem&aacute;foro</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <input type="text" placeholder="Nombre de la fase"
+                                   value="{{ $fase.Nombre }}" id="f_nombre_{{$fase.ID}}"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <b>Verde</b>
+                            <input type="number" placeholder="[s]" value="{{ $fase.Verde }}"
+                                   id="f_verde_{{$fase.ID}}" required/>
+                        </div>
+                        <div class="col-md-4">
+                            <b>Amarillo</b>
+                            <input type="number" placeholder="[s]" value="{{ $fase.Amarillo }}"
+                                   id="f_amarillo_{{$fase.ID}}" required/>
+                        </div>
+                        <div class="col-md-4">
+                            <b>Rojo</b>
+                            <input type="number" placeholder="[s]" value="{{ $fase.Rojo }}"
+                                   id="f_rojo_{{$fase.ID}}" required/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <b>Todo rojo</b><br>
+                            <input type="number" placeholder="[s]" value="{{ $fase.Todo_rojo }}"
+                                   id="f_todorojo_{{$fase.ID}}" required>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger"
+                            data-dismiss="modal" data-toggle="modal"
+                            data-target="#del_fase_{{ $fase.ID }}">Eliminar
+                    </button>
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Cancelar
+                    </button>
+                    <button onclick="updateFase({{$fase.ID}});" id="btn_edit_fase_{{$fase.ID}}" class="btn btn-primary">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="del_fase_{{ $fase.ID }}" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior"
+             role="document">
+            <div class="modal-content">
+                <div class="modal-header"
+                     style="background-color: #d62c33; border-top-left-radius: 5px; border-bottom-right-radius: 5px; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"
+                        id="myModalLabel">Eliminar fase del sem&aacute;foro</h4>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-danger">Est&aacute;
+                        seguro que desea eliminar la
+                        fase del sem&aacute;foro ({{$fase.Nombre}})?</h4>
+                    <b>Se preder&aacute;n todos los datos
+                        de la fase, y grupos de carriles a la que pertenece.</b>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal">Cancelar
+                    </button>
+                    <button onclick="delFase({{$fase.ID}})" id="btn_del_fase_{{$fase.ID}}" class="btn btn-danger">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{end}}
+{{range $key_acceso, $acceso := $accesos}}
+    <div class="modal fade" id="add_carril_{{ $acceso.ID }}" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header"
+                     style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-uppercase" id="myModalLabel">Agregar un Carril </h4>
+                </div>
+                <div class="modal-body">
+                {{if eq $acceso.CountCarrilesPorAccesos 0}}
+                    <b>Defina el ancho del primer carril del acceso <b
+                            class="text-uppercase">{{ $acceso.Nombre }}</b></b><br>Ancho:
+                {{else}}
+                    <b>El acceso <b class="text-uppercase">{{ $acceso.Nombre }}</b> cuenta
+                        con {{$acceso.CountCarrilesPorAccesos}} carril(es), est&aacute; seguro de adicionar otro
+                        carril al an&aacute;lisis.</b><br>
+                    De ser as&iacute; defina su ancho:
+                {{end}}
+                    <input type="text" id="ancho_carril_{{$acceso.ID}}" value="2.5"
+                           id="id_ancho" style="width: 50px;"/> [m]
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Cancelar
+                    </button>
+                    <button class="btn btn-primary" id="btn_add_carril_{{$acceso.ID}}"
+                            onclick="addCarril({{$acceso.ID}});">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="edit_acceso_{{$acceso.ID}}" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true" style="color: #fff;">&times;</span>
+                    </button>
+                    <h4 class="modal-title text-uppercase" id="myModalLabel">Editar el acceso {{$acceso.Nombre}}</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>S [%]</label>
+                                    <input type="text" name="pendiente"
+                                           value="{{$acceso.Pendiente}}"
+                                           style="width: 50px;" id="pendiente_{{$acceso.ID}}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>FHMD</label>
+                                    <input name="fhmd" value="{{$acceso.Fhmd}}"
+                                           type="text" style="width: 50px;" id="fhmd_{{$acceso.ID}}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>So</label>
+                                    <input name="intensidad"
+                                           value="{{$acceso.Intensidad}}" type="text"
+                                           style="width: 50px;" id="intensidad_{{$acceso.ID}}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="text-align: left;">
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="dossentidos_{{$acceso.ID}}"
+                                       {{if eq $acceso.Dossentidos "true"}}checked="checked"{{end}}/>
+                                <span>Dos sentido de circulaci&oacute;n</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="separadorcentral_{{$acceso.ID}}"
+                                       {{if eq $acceso.Separadorcentral "true"}}checked="checked"{{end}}/>
+                                <span>Separador central</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="carrilseparador_{{$acceso.ID}}"
+                                       {{if eq $acceso.Carrilseparador "true"}}checked="checked"{{end}}/>
+                                <span>Carril dentro del separador</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="parada_{{$acceso.ID}}"
+                                       {{if eq $acceso.Parada "true"}}checked="checked"{{end}}/>
+                                <span>Parada</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="isleta_{{$acceso.ID}}"
+                                       {{if eq $acceso.Isleta "true"}}checked="checked"{{end}}/>
+                                <span>Isleta</span>
+                            </label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="tgl" style="font-size:14px">
+                                <input type="checkbox" id="cebra_{{$acceso.ID}}"
+                                       {{if eq $acceso.Cebra "true"}}checked="checked"{{end}}/>
+                                <span>Paso de peatones</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Me [u]</label>
+                                    <input name="maniobrasestacionamiento"
+                                           value="{{$acceso.Maniobrasestacionamiento}}"
+                                           type="text" style="width: 50px;"
+                                           id="maniobrasestacionamiento_{{$acceso.ID}}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Mp [u]</label>
+                                    <input name="maniobrasparada"
+                                           value="{{$acceso.Maniobrasparada}}"
+                                           type="text" style="width: 50px;" id="maniobrasparada_{{$acceso.ID}}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tpa [s]</label>
+                                    <input name="tpad"
+                                           value="{{$acceso.Tpad}}"
+                                           type="text" style="width: 50px;" id="tpad_{{$acceso.ID}}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn_edit_acceso_{{$acceso.ID}}"
+                            onclick="updateAccesos({{$acceso.ID}});">Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="del_acceso_{{ $acceso.ID }}" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior"
+             role="document">
+            <div class="modal-content">
+                <div class="modal-header"
+                     style="background-color: #d62c33; border-top-left-radius: 5px; border-bottom-right-radius: 5px; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title text-uppercase"
+                        id="myModalLabel">Acceso {{ $acceso.Nombre }}</h4>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-danger">Est&aacute;
+                        seguro de no analizar este
+                        acceso?</h4>
+                    <b>Se preder&aacute;n todos los datos
+                        del acceso, incluyendo carriles, movimientos y grupos.</b>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal">Cancelar
+                    </button>
+                    <button onclick="delAcceso({{$acceso.ID}});" id="btn_del_acceso_{{$acceso.ID}}" class="btn btn-danger">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="add_grupo_{{ $acceso.ID }}" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Agregar grupo de carriles</h4>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center"><b>Fase del sem&aacute;foro a la que
+                        pertenece el movimiento en el acceso {{ $acceso.Nombre }}</b></h5>
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <select id="fases_{{$acceso.ID}}"
+                                    class="form-control">
+                            {{range  $key_fase, $fase := $fases}}
+                                <option value="{{ $fase.ID }}">{{ $fase.Nombre }}</option>
+                            {{end}}
+                            </select>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <img src="/static/images/border.png"
+                         alt="Border"
+                         class="templatemo-border">
+                    <h5 class="text-center"><b>
+                        Seleccione los carriles que pertenecer&aacute;n al
+                        grupo:</b></h5>
+
+                    <div class="text-center">
+                        <p class="center">
+                        {{range $key_carril, $carril := $acceso.CarrilesPorAccesos }}
+                        {{if eq $carril.CarrilEnGrupo false}}
+                            <input type="checkbox"
+                                   id="carriles_{{ $acceso.ID }}_{{$key_carril}}"
+                                   value="{{ $carril.ID }}"
+                                   class="{{if eq $key_carril 0}}a{{else if eq $key_carril 1}}b{{else if eq $key_carril 2}}c{{else if eq $key_carril 3}}d{{else if eq $key_carril 4}}e{{else}}f{{end}}">
+                        {{end}}
+                        {{end}}
+                        </p>
+                    </div>
+                    <br>
+                    <img src="/static/images/border.png"
+                         alt="Border" class="templatemo-border">
+                    <b>Nota:</b> Debe de seleccionar carriles consecutivos para
+                    evitar errores.
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Cancelar
+                    </button>
+                    <button onclick="addGrupo({{$acceso.ID}});" id="btn_add_grupo_{{$acceso.ID}}" class="btn btn-primary">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{range $grupo := $acceso.GruposPorAccesos}}
+    <div class="modal fade" id="grupo_opt_{{ $grupo.ID }}" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Editar grupo de carriles {{$grupo.NombreGrupo}}</h4>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center"><b>Fase del sem&aacute;foro a la que
+                        pertenece el movimiento en el acceso {{ $acceso.Nombre }}</b></h5>
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <select id="edit_fases_{{$grupo.ID}}"
+                                    class="form-control">
+                            {{range  $key_fase, $fase := $fases}}
+                                <option value="{{ $fase.ID }}"
+                                        {{if eq $fase.ID $grupo.Fase }}selected{{end}}>{{ $fase.Nombre }}</option>
+                            {{end}}
+                            </select>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <img src="/static/images/border.png"
+                         alt="Border"
+                         class="templatemo-border">
+                    <h5 class="text-center"><b>
+                        Seleccione los carriles que pertenecer&aacute;n al
+                        grupo:</b></h5>
+
+                    <div class="text-center">
+                        <p class="center">
+                        {{range $key_carril, $carril := $acceso.CarrilesPorAccesos }}
+                        {{if eq ($grupo.CarrilEnEsteGrupo $carril) true}}
+                            <input type="checkbox" checked="checked"
+                                   id="edit_carriles_{{ $grupo.ID }}_{{$key_carril}}"
+                                   value="{{ $carril.ID }}"
+                                   class="{{if eq $key_carril 0}}a{{else if eq $key_carril 1}}b{{else if eq $key_carril 2}}c{{else if eq $key_carril 3}}d{{else if eq $key_carril 4}}e{{else}}f{{end}}">
+                        {{end}}
+                        {{end}}
+                        </p>
+                    </div>
+                    <br>
+                    <img src="/static/images/border.png"
+                         alt="Border" class="templatemo-border">
+                    <b>Nota:</b> Debe de seleccionar carriles consecutivos para
+                    evitar errores.
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger"
+                            data-dismiss="modal" data-toggle="modal"
+                            data-target="#del_grupo_{{ $grupo.ID }}">Eliminar
+                    </button>
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Cancelar
+                    </button>
+                    <button id="btn_edit_grupo_{{$grupo.ID}}" onclick="editGrupo('{{$acceso.ID}}','{{$grupo.ID}}');" class="btn btn-primary">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="del_grupo_{{ $grupo.ID }}" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior"
+             role="document">
+            <div class="modal-content">
+                <div class="modal-header"
+                     style="background-color: #d62c33; border-top-left-radius: 5px; border-bottom-right-radius: 5px; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"
+                        id="myModalLabel">Eliminar el
+                        grupo carril {{$grupo.NombreGrupo}}</h4>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-danger">Est&aacute;
+                        seguro que desea eliminar este
+                        grupo?</h4>
+                    <b>Se preder&aacute;n todos los datos
+                        del grupo.</b>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal">Cancelar
+                    </button>
+                    <button onclick="delGrupo({{$grupo.ID}});" id="btn_del_grupo_{{$grupo.ID}}" class="btn btn-danger">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{end}}
+
+{{range $key_carril, $carril := $acceso.CarrilesPorAccesos }}
+    <div class="modal fade" id="new_mov_{{ $carril.ID }}" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior"
+             role="document">
+            <div class="modal-content">
+                <div class="modal-header"
+                     style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"
+                        id="myModalLabel">Adicionar
+                        un movimiento</h4>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center"><b>Direcci&oacute;n del movimiento</b></h5>
+                    <div class="center">
+                        <p>
+
+                            <input type="radio"
+                                   value="I"
+                                   name="tipo"
+                                   id="tipo_i_{{$carril.ID}}"
+                                   class="a {{range  $key_mov, $mov := $carril.MoviminetosPorCarriles}}{{if eq $mov.Tipo "I"}}hidden{{end}}{{end}}"/>
+
+                            <input type="radio"
+                                   value="R"
+                                   name="tipo"
+                                   id="tipo_r_{{$carril.ID}}"
+                                   class="b {{range  $key_mov, $mov := $carril.MoviminetosPorCarriles}}{{if eq $mov.Tipo "R"}}hidden{{end}}{{end}}"/>
+
+                            <input type="radio"
+                                   value="D"
+                                   name="tipo"
+                                   id="tipo_d_{{$carril.ID}}"
+                                   class="c {{range  $key_mov, $mov := $carril.MoviminetosPorCarriles}}{{if eq $mov.Tipo "D"}}hidden{{end}}{{end}}"/>
+                        </p>
+                    </div>
+                    <img src="/static/images/border.png" alt="Border"
+                         class="templatemo-border">
+                    <div class="row text-left">
+                        <h5 class="text-center"><b>Desglose
+                            el vol&uacute;men por tipo de
+                            veh&iacute;culo</b></h5>
+
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <i class="fa fa-car"></i>
+                                Autos
+                                <input type="number" id="autos_{{$carril.ID}}" value="0"/>
+                            </div>
+                            <div class="col-md-6">
+                                <i class="fa fa-bus"></i>
+                                Omnibus
+                                <input type="number" id="omnibus_{{$carril.ID}}" value="0"/>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <i class="fa fa-truck"></i>
+                                Camiones de pasaje
+                                <input type="number" id="camionespasaje_{{$carril.ID}}" value="0"/>
+                            </div>
+                            <div class="col-md-6">
+                                <i class="fa fa-ambulance"></i>
+                                Camiones de carga
+                                <input type="number" id="camionescarga_{{$carril.ID}}" value="0"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <i class="fa fa-bicycle"></i>
+                                Ciclos
+                                <input type="number" id="ciclos_{{$carril.ID}}" value="0"/>
+                            </div>
+                            <div class="col-md-6">
+                                <i class="fa fa-motorcycle"></i>
+                                Motocicletas
+                                <input type="number" id="motos_{{$carril.ID}}" value="0"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-12">
+                                Coches
+                                <input type="number" id="coches_{{$carril.ID}}" value="0"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button class="btn btn-primary" id="btn_add_mov_{{$carril.ID}}" onclick="addMovimientos({{$carril.ID}});">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="del_carril_{{ $carril.ID }}" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior"
+             role="document">
+            <div class="modal-content">
+                <div class="modal-header"
+                     style="background-color: #d62c33; border-top-left-radius: 5px; border-bottom-right-radius: 5px; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"
+                        id="myModalLabel">Eliminar el
+                        carril</h4>
+                </div>
+
+                <div class="modal-body">
+                    <h4 class="text-danger">Est&aacute;
+                        seguro que desea eliminar este
+                        carril?</h4>
+                    <b>Se preder&aacute;n todos los datos
+                        del carril, incluyendo el grupo
+                        de carril al que pertenece el
+                        mismo.</b>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal">Cancelar
+                    </button>
+                    <button onclick="delCarril({{$carril.ID}});" id="btn_del_carril_{{$carril.ID}}" class="btn btn-danger">
+                        Eliminar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="carril_edit_{{ $carril.ID }}" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior"
+             role="document">
+            <div class="modal-content">
+                <div class="modal-header"
+                     style="background-color: #4997cd; border-top-left-radius: 5px; border-bottom-right-radius: 5px; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"
+                        id="myModalLabel">Editar el
+                        carril {{$carril.MasUno $key_carril }} del acceso {{$acceso.Nombre}}</h4>
+                </div>
+
+                <div class="modal-body">
+                    Ancho del carril:
+                    <input type="text" id="ancho_carril_{{$acceso.ID}}_{{$carril.ID}}" value="{{$carril.Ancho}}"
+                           style="width: 50px;"/> [m]
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal">Cancelar
+                    </button>
+                    <button id="btn_edit_carril_{{$carril.ID}}" onclick="updateCarril('{{$acceso.ID}}','{{$carril.ID}}');" class="btn btn-primary">
+                        Editar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{{range $key_mov, $movimiento := $carril.MoviminetosPorCarriles}}
+    <div class="modal fade" id="edit_mov_{{ $movimiento.ID }}" tabindex="-1"
+         role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior"
+             role="document">
+            <div class="modal-content">
+                <div class="modal-header"
+                     style="background: #4997cd; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title text-uppercase"
+                        id="myModalLabel">Editar movimiento</h4>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center"><b>Movimiento {{if eq $movimiento.Tipo "I"}}
+                        Izquierdo{{else if eq $movimiento.Tipo "R"}}Recto{{else}}Derecho{{end}}</b></h5>
+                    <div class="center">
+                        <p>
+
+                        </p>
+                    </div>
+                    <img src="/static/images/border.png" alt="Border"
+                         class="templatemo-border">
+                    <div class="row text-left">
+                        <h5 class="text-center"><b>Desglose
+                            el vol&uacute;men por tipo de
+                            veh&iacute;culo</b></h5>
+
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <i class="fa fa-car"></i>
+                                Autos
+                                <input type="number" id="{{$acceso.ID}}_autos_{{$movimiento.ID}}"
+                                       value="{{$movimiento.Autos}}"/>
+                            </div>
+                            <div class="col-md-6">
+                                <i class="fa fa-bus"></i>
+                                Omnibus
+                                <input type="number" id="{{$acceso.ID}}_omnibus_{{$movimiento.ID}}"
+                                       value="{{$movimiento.Omnibus}}"/>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <i class="fa fa-truck"></i>
+                                Camiones de pasaje
+                                <input type="number" id="{{$acceso.ID}}_camionespasaje_{{$movimiento.ID}}"
+                                       value="{{$movimiento.CamionesPasaje}}"/>
+                            </div>
+                            <div class="col-md-6">
+                                <i class="fa fa-ambulance"></i>
+                                Camiones de carga
+                                <input type="number" id="{{$acceso.ID}}_camionescarga_{{$movimiento.ID}}"
+                                       value="{{$movimiento.CamionesCarga}}"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <i class="fa fa-bicycle"></i>
+                                Ciclos
+                                <input type="number" id="{{$acceso.ID}}_ciclos_{{$movimiento.ID}}"
+                                       value="{{$movimiento.Ciclos}}"/>
+                            </div>
+                            <div class="col-md-6">
+                                <i class="fa fa-motorcycle"></i>
+                                Motocicletas
+                                <input type="number" id="{{$acceso.ID}}_motos_{{$movimiento.ID}}"
+                                       value="{{$movimiento.Motos}}"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-12">
+                                Coches
+                                <input type="number" id="{{$acceso.ID}}_coches_{{$movimiento.ID}}"
+                                       value="{{$movimiento.Coches}}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button id="btn_edit_mov_{{$movimiento.ID}}" class="btn btn-primary"
+                            onclick="updateMovimientos('{{$movimiento.ID}}','{{$movimiento.Carril}}','{{$movimiento.Tipo}}','{{$acceso.ID}}');">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="del_mov_{{ $movimiento.ID }}" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm superior"
+             role="document">
+            <div class="modal-content">
+                <div class="modal-header"
+                     style="background-color: #d62c33; border-top-left-radius: 5px; border-bottom-right-radius: 5px; color: #fff;">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"
+                        id="myModalLabel">Eliminar movimiento</h4>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-danger">Est&aacute;
+                        seguro que desea eliminar este
+                        movimiento?</h4>
+                    <b>Al eliminar el movimiento se elimina el grupo al que pertenece este carril ya que puede
+                        ocacionarse errores en el an&aacute;lisis.</b>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal">Cancelar
+                    </button>
+                    <button id="btn_del_mov_{{$movimiento.ID}}" onclick="delMovimiento({{$movimiento.ID}});"
+                            class="btn btn-danger">
+                        Eliminar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{{end}}
+{{end}}
+{{end}}
+    <div class="modal fade" id="ayuda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog superior" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"
+                        id="myModalLabel">Ayuda</h4>
+                </div>
+                <div class="modal-body">
+                    En esta secci&oacute;n podr&aacute; introducir y luego editar todos los datos de la
+                    intersecci&oacute;n.
+                    <img src="data:image/png;base64,{{.img_borde}}"
+                         alt="Border"
+                         class="templatemo-border">
+                    A la izquierda visualizar&aacute; una vista previa de la intersecci&oacute;n con un bot&oacute;n <i
+                        class="fa fa-eye-slash"></i> en todo los accesos que debe de presionar si desea agregar el
+                    acceso al an&aacute;lisis. En el acceso que agrege se presentar&aacute; una lista de botones en el
+                    siguiente orden
+                    <div style="width: 148px; height: 20px; color: #fff; background-color: #5e5e5e; text-align: center;">
+                        <b>A</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-edit"></i> &nbsp;&nbsp;
+                        <i class="fa fa-bars" style="transform: rotate(90deg);"></i>&nbsp;&nbsp;
+                        <i class="fa fa-cubes"></i>&nbsp;&nbsp;
+                        <i class="fa fa-eye-slash"></i>
+                    </div>
+                    Nombre del acceso,<i class="fa fa-edit"></i> editar,<i class="fa fa-bars"
+                                                                           style="transform: rotate(90deg);"></i>
+                    agregar un carril,<i class="fa fa-cubes"></i> crear grupo de carriles,<i
+                        class="fa fa-eye-slash"></i> eliminar acceso del an&aacute;lisis, respectivamente. Estos botones
+                    le mostraran los campos para ir personalizando la intersecci&oacute;n.
+                    <img src="data:image/png;base64,{{.img_borde}}"
+                         alt="Border"
+                         class="templatemo-border">
+                    A la derecha se proporciona la informaci&oacute;n de los carriles incluyendo los grupos
+                    de los mismos.<br>
+                    Para agregar los movimientos al carril, presione en el bot&oacute;n <span class="text-primary"><i
+                        class="fa fa-plus"></i> Movimiento</span>, los mismos se pueden <i class="fa fa-edit"></i>editar
+                    &oacute; <i class="fa fa-trash"></i>eliminar.
+                    <br><br>
+                    <b class="text-danger">Advertencia: </b> En caso de equivocaci&oacute;n al introducir
+                    los carriles, el sistema le permitir&aacute; eliminar los carriles de derecha a izquierda.
+                    <br><br>
+                    Los grupos de carriles se puede crear cuando ya esten insertadas las fases del sem&aacute;foro, para
+                    lo cual tendr&aacute; que seleccionar los carriles que
+                    pertenezcan al grupo, siempre de forma consecutiva.
+                    <br>
+                    EJ: Si tiene un acceso con 3 carriles <b>(1,2,3)</b> un grupo puede ser <b>(1 y 2)</b> y
+                    el otro
+                    sol el carril <b>(3)</b>.<br>
+                    Ser&iacute;a erroneo seleccionar como grupo los carriles <b class="text-danger">(1 y
+                    3)</b>.
+                    <img src="data:image/png;base64,{{.img_borde}}"
+                         alt="Border"
+                         class="templatemo-border">
+                    Cuando termine de introducir todos los datos de la intersecci&oacute;n presiona el bot&oacute;n
+                    (An&aacute;lisis) ubicado en la barra superio para mostrarle el an&aacute;lisis
+                    detallado de la
+                    intersecci&oacute;n.
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/static/js/datatable/jquery.min.js"></script>
+<script src="/static/js/datatable/bootstrap.min.js"></script>
+<script>
+    //--------------------------------------------------------
+    //-----------FUNCIONES PARA AGREGAR ----------------------
+    //--------------------------------------------------------
+    function addAccesos(val) {
+        //stop submit the form, we will post it manually.
+        //event.preventDefault();
+        $('#btn_add_acceso_' + val).addClass('disabled');
+
+        var data = new FormData();
+        data.append('interseccion', "{{.interseccion.ID}}");
+        data.append('nombre', val);
+        data.append('pendiente', $('#pendiente_' + val)[0].value);
+        data.append('fhmd', $('#fhmd_' + val)[0].value);
+        data.append('intensidad', $('#intensidad_' + val)[0].value);
+        data.append('maniobrasestacionamiento', $('#maniobrasestacionamiento_' + val)[0].value);
+        data.append('maniobrasparada', $('#maniobrasparada_' + val)[0].value);
+        data.append('tpad', $('#tpad_' + val)[0].value);
+        data.append('dossentidos', $('#dossentidos_' + val)[0].checked);
+        data.append('parada', $('#parada_' + val)[0].checked);
+        data.append('isleta', $('#isleta_' + val)[0].checked);
+        data.append('separadorcentral', $('#separadorcentral_' + val)[0].checked);
+        data.append('carrilseparador', $('#carrilseparador_' + val)[0].checked);
+        data.append('cebra', $('#cebra_' + val)[0].checked);
+
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/add_acceso",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    function addCarril(acceso) {
+        $('#btn_add_carril_' + acceso).addClass('disabled');
+        var data = new FormData();
+        data.append('acceso', acceso);
+        data.append('ancho', $('#ancho_carril_' + acceso)[0].value);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/add_carril",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    function addMovimientos(val) {
+        $('#btn_add_mov_'+val).addClass('disabled');
+
+        if ($('#tipo_i_' + val)[0].checked == true) {
+            var tipo = $('#tipo_i_' + val)[0].value;
+        } else if ($('#tipo_r_' + val)[0].checked == true) {
+            var tipo = $('#tipo_r_' + val)[0].value;
+        } else {
+            var tipo = $('#tipo_d_' + val)[0].value;
+        }
+        var data = new FormData();
+        data.append('carril', val);
+        data.append('tipo', tipo);
+        data.append('autos', $('#autos_' + val)[0].value);
+        data.append('motos', $('#motos_' + val)[0].value);
+        data.append('ciclos', $('#ciclos_' + val)[0].value);
+        data.append('coches', $('#coches_' + val)[0].value);
+        data.append('camionescarga', $('#camionescarga_' + val)[0].value);
+        data.append('camionespasaje', $('#camionespasaje_' + val)[0].value);
+        data.append('omnibus', $('#omnibus_' + val)[0].value);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/add_movimiento",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+
+    }
+
+    function addFase() {
+        $('#btn_add_fase').addClass('disabled');
+        var data = new FormData();
+        data.append('interseccion', "{{.interseccion.ID}}");
+        data.append('nombre', $('#nombre')[0].value);
+        data.append('verde', $('#verde')[0].value);
+        data.append('amarillo', $('#amarillo')[0].value);
+        data.append('rojo', $('#rojo')[0].value);
+        data.append('todorojo', $('#todorojo')[0].value);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/add_fase",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    function addGrupo(id) {
+        $('#btn_add_grupo_'+id).addClass('disabled');
+        var carriles = "";
+    {{range $key_acceso, $acceso := $accesos}}
+        if (id == "{{$acceso.ID}}") {
+        {{range $key_carril, $carril := $acceso.CarrilesPorAccesos }}
+            if ("{{$carril.CarrilEnGrupo}}" == "false") {
+                if ($('#carriles_' + id + '_{{$key_carril}}')[0].checked == true) {
+                    carriles = carriles + $('#carriles_' + id + '_{{$key_carril}}')[0].value + ",";
+                }
+            }
+        {{end}}
+        }
+    {{end}}
+        var data = new FormData();
+        data.append('acceso', id);
+        data.append('fase', $('#fases_' + id)[0].value);
+        data.append('carriles', carriles);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/add_grupo",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    //--------------------------------------------------------
+    //-----------FUNCIONES PARA ACTUALIZAR--------------------
+    //--------------------------------------------------------
+    function updateAccesos(val) {
+        $('#btn_edit_acceso_' + val).addClass('disabled');
+        var data = new FormData();
+        data.append('id', val);
+        data.append('pendiente', $('#pendiente_' + val)[0].value);
+        data.append('fhmd', $('#fhmd_' + val)[0].value);
+        data.append('intensidad', $('#intensidad_' + val)[0].value);
+        data.append('maniobrasestacionamiento', $('#maniobrasestacionamiento_' + val)[0].value);
+        data.append('maniobrasparada', $('#maniobrasparada_' + val)[0].value);
+        data.append('tpad', $('#tpad_' + val)[0].value);
+        data.append('dossentidos', $('#dossentidos_' + val)[0].checked);
+        data.append('parada', $('#parada_' + val)[0].checked);
+        data.append('isleta', $('#isleta_' + val)[0].checked);
+        data.append('separadorcentral', $('#separadorcentral_' + val)[0].checked);
+        data.append('carrilseparador', $('#carrilseparador_' + val)[0].checked);
+        data.append('cebra', $('#cebra_' + val)[0].checked);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/update_acceso",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    function editGrupo(acceso, grupo) {
+        $('#btn_edit_grupo_'+grupo).addClass('disabled');
+        var carriles = "";
+    {{range $key_acceso, $acceso := $accesos}}
+        if (acceso == "{{$acceso.ID}}") {
+        {{range $grupo := $acceso.GruposPorAccesos}}
+            if (grupo == "{{$grupo.ID}}") {
+            {{range $key_carril, $carril := $acceso.CarrilesPorAccesos }}
+            {{if eq ($grupo.CarrilEnEsteGrupo $carril) true}}
+                if ($('#edit_carriles_' + grupo + '_{{$key_carril}}')[0].checked == true) {
+                    carriles = carriles + $('#edit_carriles_' + grupo + '_{{$key_carril}}')[0].value + ",";
+                }
+            {{end}}
+            {{end}}
+            }
+        {{end}}
+        }
+    {{end}}
+        var data = new FormData();
+        data.append('id', grupo);
+        data.append('acceso', acceso);
+        data.append('fase', $('#edit_fases_' + grupo)[0].value);
+        data.append('carriles', carriles);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/update_grupo",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    function updateMovimientos(id, acc, tipo, acceso) {
+        $('#btn_edit_mov_').addClass('disabled');
+        var data = new FormData();
+        data.append('id', id);
+        data.append('carril', acc);
+        data.append('tipo', tipo);
+        data.append('autos', $('#' + acceso + '_autos_' + id)[0].value);
+        data.append('motos', $('#' + acceso + '_motos_' + id)[0].value);
+        data.append('ciclos', $('#' + acceso + '_ciclos_' + id)[0].value);
+        data.append('coches', $('#' + acceso + '_coches_' + id)[0].value);
+        data.append('camionescarga', $('#' + acceso + '_camionescarga_' + id)[0].value);
+        data.append('camionespasaje', $('#' + acceso + '_camionespasaje_' + id)[0].value);
+        data.append('omnibus', $('#' + acceso + '_omnibus_' + id)[0].value);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/update_movimiento",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    function updateFase(id) {
+        $('btn_edit_fase' + id).addClass('disabled');
+        var data = new FormData();
+        data.append('id', id);
+        data.append('interseccion', "{{.interseccion.ID}}");
+        data.append('nombre', $('#f_nombre_' + id)[0].value);
+        data.append('verde', $('#f_verde_' + id)[0].value);
+        data.append('amarillo', $('#f_amarillo_' + id)[0].value);
+        data.append('rojo', $('#f_rojo_' + id)[0].value);
+        data.append('todorojo', $('#f_todorojo_' + id)[0].value);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/update_fase",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    function updateCarril(acceso, carril) {
+        $('#btn_edit_carril_'+carril).addClass('disabled');
+        var data = new FormData();
+        data.append('id', carril);
+        data.append('acceso', acceso);
+        data.append('ancho', $('#ancho_carril_' + acceso + '_' + carril)[0].value);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/update_carril",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    //--------------------------------------------------------
+    //-----------FUNCIONES PARA ELIMINAR----------------------
+    //--------------------------------------------------------
+    function delAcceso(id) {
+        $('#btn_del_acceso'+id).addClass('disabled');
+        var data = new FormData();
+        data.append('id', id);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/del_acceso",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    function delCarril(id) {
+        $('#btn_del_carril_').addClass('disabled');
+        var data = new FormData();
+        data.append('id', id);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/del_carril",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    function delMovimiento(id) {
+        $('#btn_del_mov_'+id).addClass('disabled');
+        var data = new FormData();
+        data.append('id', id);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/del_movimiento",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    function delFase(id) {
+        $('#btn_del_fase_' + id).addClass('disabled');
+        var data = new FormData();
+        data.append('id', id);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/del_fase",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    function delGrupo(id) {
+        $('#btn_del_grupo_'+id).addClass('disabled');
+        var data = new FormData();
+        data.append('id', id);
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            url: "/del_grupo",
+            data: data,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function () {
+                alert("Ha ocurrido un error.");
+            }
+        });
+    }
+
+    //--------------------------------------------------------
+    //-----------FUNCIONES PARA MOSTRAR EN LA PLANTILLA-------
+    //--------------------------------------------------------
+    function titulo(text) {
+        $('#mensajes').text(text);
+    }
+
+    //Activar y desactivar los add carriles
+    function on_add_carril_a() {
+        $("#add_carril_a").removeClass("hidden");
+    }
+
+    function off_add_carril_a() {
+        $("#add_carril_a").addClass("hidden");
+    }
+
+    function on_add_carril_b() {
+        $("#add_carril_b").removeClass("hidden");
+    }
+
+    function off_add_carril_b() {
+        $("#add_carril_b").addClass("hidden");
+    }
+
+    function on_add_carril_c() {
+        $("#add_carril_c").removeClass("hidden");
+    }
+
+    function off_add_carril_c() {
+        $("#add_carril_c").addClass("hidden");
+    }
+
+    function on_add_carril_d() {
+        $("#add_carril_d").removeClass("hidden");
+    }
+
+    function off_add_carril_d() {
+        $("#add_carril_d").addClass("hidden");
+    }
+
+    $(function () {
+        $('#myTab li:active a').tab('show');
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+    $(document).ready(function () {
+            {{range $k, $acceso := $accesos}}
+                parent = $('#Carriles_{{$acceso.Nombre}}');
+                num = {{$acceso.CountCarrilesPorAccesos}} -2;
+                count = parent.children.length + num;
+                size = parent.width() / count;
+                html = "";
+                for (var i = 1; i <= count; i++) {
+                    if (i == 1) {
+                        html += '<div style="display: inline-block; min-height: ' + parent.height() + 'px; min-width:' + (size - 1) + 'px">' + i + '</div>'
+                    } else {
+                        html += '<div style="display: inline-block; min-height: ' + parent.height() + 'px; border-left: dashed 1px #fff; min-width:' + (size - 1) + 'px">' + i + '</div>'
+                    }
+                }
+                parent.html(html);
+                //
+                parent = $('#add_carril_{{$acceso.Nombre}}');
+                num ={{$acceso.CountCarrilesPorAccesos}} -1;
+                count = parent.children.length + num;
+                size = parent.width() / count;
+                html = "";
+                for (var i = 1; i <= count; i++) {
+                    if (i == 1) {
+                        html += '<div style="display: inline-block; min-height: ' + parent.height() + 'px; min-width:' + (size - 1) + 'px">' + i + '</div>'
+                    } else {
+                        if (i == count) {
+                            text = "+";
+                        } else {
+                            text = i;
+                        }
+
+                        html += '<div style="display: inline-block; min-height: ' + parent.height() + 'px; border-left: dashed 1px #000; min-width:' + (size - 1) + 'px">' + text + '</div>'
+                    }
+                }
+                parent.html(html);
+            {{end}}
+            }
+    );
+</script>
